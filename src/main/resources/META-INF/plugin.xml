@@ -1,0 +1,44 @@
+<idea-plugin>
+    <id>com.suiyiwen.plugin.idea</id>
+    <name>serviceDoc</name>
+    <version>1.0</version>
+    <vendor email="dongxl123@163.com" url="http://www.suiyiwen.com">YourCompany</vendor>
+
+    <description><![CDATA[
+
+           serviceDoc generation helper
+
+    ]]></description>
+
+    <change-notes><![CDATA[
+    ]]>
+    </change-notes>
+
+    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="143.2370.31"/>
+
+    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
+
+    <application-components>
+    </application-components>
+
+    <project-components>
+    </project-components>
+
+    <actions>
+        <action id="serviceDocPlugin.action.generate" text="serviceDoc"
+                class="com.suiyiwen.plugin.idea.servicedoc.action.GenerateAction">
+            <!--IdeActions -->
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>
+            <keyboard-shortcut first-keystroke="ctrl shift alt o" keymap="$default"/>
+        </action>
+    </actions>
+
+</idea-plugin>
