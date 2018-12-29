@@ -1,6 +1,6 @@
-package com.suiyiwen.plugin.idea.servicedoc.helper;
+package com.suiyiwen.plugin.idea.servicedoc.utils;
 
-import com.suiyiwen.plugin.idea.servicedoc.bean.MetadataBean;
+import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogBean;
 import com.suiyiwen.plugin.idea.servicedoc.ui.ServiceDocGenerateDialog;
 
 /**
@@ -11,7 +11,7 @@ public enum DialogHelper {
 
     INSTANCE;
 
-    public void showGenerateDialog(MetadataBean model) {
+    public void showGenerateDialog(DialogBean model) {
         ServiceDocGenerateDialog dialog = new ServiceDocGenerateDialog(false);
         dialog.setModel(model);
         dialog.show();

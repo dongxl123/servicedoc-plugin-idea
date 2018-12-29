@@ -1,9 +1,8 @@
 package com.suiyiwen.plugin.idea.servicedoc.ui;
 
 import com.intellij.openapi.ui.DialogWrapper;
-import com.suiyiwen.plugin.idea.servicedoc.bean.MetadataBean;
+import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogBean;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
-import kotlin.Metadata;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -20,7 +19,7 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
     private JTextArea description;
     private JTabbedPane paramTabbedPanel;
     private JTable resultTable;
-    private MetadataBean model;
+    private DialogBean model;
 
     public ServiceDocGenerateDialog(boolean canBeParent) {
         super(canBeParent);
@@ -28,7 +27,7 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
         setTitle(ServiceDocConstant.TITLE_GENERATE_DIALOG);
     }
 
-    public void setModel(MetadataBean model) {
+    public void setModel(DialogBean model) {
         this.model = model;
     }
 
