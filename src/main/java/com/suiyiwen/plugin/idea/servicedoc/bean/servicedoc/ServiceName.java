@@ -1,19 +1,14 @@
 package com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc;
 
-import com.suiyiwen.plugin.idea.servicedoc.bean.ServiceDocTag;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author dongxuanliang252
  * @date 2018-12-27 19:05
  */
-@Data
-public class ServiceName implements ServiceDocElement {
+@Getter
+@Setter
+public class ServiceName extends AbstractServiceText {
 
-    private String name;
-
-    @Override
-    public ServiceDocTag getTag() {
-        return ServiceDocTag.serviceName;
-    }
 }

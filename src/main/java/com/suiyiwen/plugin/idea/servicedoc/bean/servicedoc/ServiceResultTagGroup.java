@@ -5,10 +5,10 @@ import lombok.Setter;
 
 /**
  * @author dongxuanliang252
- * @date 2018-12-27 19:05
+ * @date 2018-12-27 19:24
  */
 @Getter
 @Setter
-public class ServiceResultExample extends AbstractServiceExample {
+public class ServiceResultTagGroup extends AbstractServiceFlowTagGroup {
 
 }

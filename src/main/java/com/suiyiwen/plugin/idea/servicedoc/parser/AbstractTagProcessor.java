@@ -52,9 +52,27 @@ public abstract class AbstractTagProcessor implements TagParser, TagBuilder {
 
     @Override
     public String build(ServiceDocElement element) {
-        return String.format("%s%s%s%s", ServiceDocConstant.TAG_TEXT_PREFIX, tag.name(), StringUtils.SPACE, buildValue(element));
+        StringBuilder sb = new StringBuilder();
+        sb.append(ServiceDocConstant.TAG_TEXT_PREFIX).append(tag.name()).append(StringUtils.SPACE).append(buildValue(element)).append(System.lineSeparator());
+        return sb.toString();
     }
 
     public abstract String buildValue(ServiceDocElement element);
+
+
+    protected <T extends ServiceDocElement> T newElementInstance() {
+        ServiceDocElement element = null;
+        try {
+            element = tag.getElementCls().newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        if (element == null) {
+            return null;
+        }
+        return (T) element;
+    }
 
 }

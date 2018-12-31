@@ -13,6 +13,10 @@ intellij {
     pluginName 'serviceDoc'
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
 group 'com.suiyiwen.plugin.idea'
 version '1.0'
 

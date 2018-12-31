@@ -1,6 +1,7 @@
 package com.suiyiwen.plugin.idea.servicedoc.parser;
 
 import com.suiyiwen.plugin.idea.servicedoc.bean.ServiceDocTag;
+import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.ServiceDocElement;
 
 /**
  * @author dongxuanliang252
@@ -15,7 +16,7 @@ public enum TagProcessorFactory {
         if (tag == null) {
             return null;
         }
-        Class cls = tag.getProcessor();
+        Class cls = tag.getProcessorCls();
         try {
             AbstractTagProcessor tagParser = (AbstractTagProcessor) cls.newInstance();
             tagParser.setTag(tag);
@@ -28,11 +29,15 @@ public enum TagProcessorFactory {
         return null;
     }
 
-    public TagBuilder getTagBuilderByName(ServiceDocTag tag) {
+    public TagBuilder getTagBuilder(ServiceDocElement element) {
+        if (element == null) {
+            return null;
+        }
+        ServiceDocTag tag = ServiceDocTag.getTagByElementCls(element.getClass());
         if (tag == null) {
             return null;
         }
-        Class cls = tag.getProcessor();
+        Class cls = tag.getProcessorCls();
         try {
             AbstractTagProcessor tagBuilder = (AbstractTagProcessor) cls.newInstance();
             tagBuilder.setTag(tag);

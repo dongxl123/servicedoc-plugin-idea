@@ -14,7 +14,7 @@
     ]]>
     </change-notes>
 
-    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for text -->
     <idea-version since-build="143.2370.31"/>
 
     <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products

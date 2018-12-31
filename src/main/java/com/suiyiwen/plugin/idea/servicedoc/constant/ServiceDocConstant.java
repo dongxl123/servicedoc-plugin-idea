@@ -16,4 +16,8 @@ public interface ServiceDocConstant {
     String TAG_TEXT_OPEN_BRACE = "{";
     String TAG_TEXT_CLOSE_BRACE = "}";
     String TAG_TEXT_PREFIX = "@";
+    String CHAR_DOT = ".";
+    String CHAR_COMMA = ",";
+    String TAG_TEXT_DEFAULT_TITLE_RESULT_GROUP = "result";
+
 }

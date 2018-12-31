@@ -1,6 +1,6 @@
 package com.suiyiwen.plugin.idea.servicedoc.utils;
 
-import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogBean;
+import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
 import com.suiyiwen.plugin.idea.servicedoc.ui.ServiceDocGenerateDialog;
 
 /**
@@ -11,11 +11,12 @@ public enum DialogHelper {
 
     INSTANCE;
 
-    public void showGenerateDialog(DialogBean model) {
-        ServiceDocGenerateDialog dialog = new ServiceDocGenerateDialog(false);
-        dialog.setModel(model);
+    public void showGenerateDialog(DialogModel model) {
+        ServiceDocGenerateDialog dialog = new ServiceDocGenerateDialog(false,model);
         dialog.show();
     }
+
+
 
 
 }

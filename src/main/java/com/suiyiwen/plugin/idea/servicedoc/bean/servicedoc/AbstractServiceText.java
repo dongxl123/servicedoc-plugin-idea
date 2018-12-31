@@ -9,6 +9,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ServiceResultExample extends AbstractServiceExample {
+public abstract class AbstractServiceText implements ServiceDocElement {
+
+    private String text;
 
 }

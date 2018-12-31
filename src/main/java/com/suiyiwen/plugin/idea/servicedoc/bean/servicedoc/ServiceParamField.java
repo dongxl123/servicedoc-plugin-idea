@@ -9,6 +9,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ServiceResultExample extends AbstractServiceExample {
+public class ServiceParamField extends AbstractServiceField implements ServiceDocElement {
 
 }

@@ -1,5 +1,6 @@
 package com.suiyiwen.plugin.idea.servicedoc.action;
 
+import com.alibaba.fastjson.JSON;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -11,6 +12,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.javadoc.PsiDocComment;
+import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
+import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.ServiceDocCommentBean;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import com.suiyiwen.plugin.idea.servicedoc.utils.DialogHelper;
 import com.suiyiwen.plugin.idea.servicedoc.utils.ServiceDocUtils;
@@ -22,8 +25,6 @@ import com.suiyiwen.plugin.idea.servicedoc.utils.ServiceDocUtils;
 public class GenerateAction extends AnAction {
 
     /**
-     * dfdfdfa1232131
-     *
      * @param e
      */
     @Override
@@ -38,11 +39,12 @@ public class GenerateAction extends AnAction {
             PsiElement firstElement = psiMethod.getFirstChild();
             if (firstElement instanceof PsiDocComment) {
                 oldDocComment = (PsiDocComment) firstElement;
-                ServiceDocUtils.INSTANCE.parsePsiDocComment(oldDocComment);
-                System.out.println(11);
+                DialogModel oldDialogModel = ServiceDocUtils.INSTANCE.parseDialogModel(oldDocComment);
+                DialogHelper.INSTANCE.showGenerateDialog(oldDialogModel);
             }
+            DialogModel currentDialogModel = ServiceDocUtils.INSTANCE.getCurrentDialogModel(psiElement);
+
             System.out.println("serviceDoc plugin action 1");
-           // DialogHelper.INSTANCE.showGenerateDialog(null);
         } else {
             Notification notification = new Notification(ServiceDocConstant.NOTIFICATION_GROUP_DISPLAY_ID, ServiceDocConstant.NOTIFICATION_TITLE, ServiceDocConstant.NOTIFICATION_CONTENT, NotificationType.WARNING);
             Notifications.Bus.notify(notification);

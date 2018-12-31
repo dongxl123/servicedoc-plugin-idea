@@ -1,6 +1,7 @@
 package com.suiyiwen.plugin.idea.servicedoc.bean.dialog;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,8 +10,9 @@ import java.util.List;
  * @author dongxuanliang252
  * @date 2018-12-18 13:40
  */
-@Data
-public class DialogBean implements Serializable {
+@Getter
+@Setter
+public class DialogModel implements Serializable {
 
     private String function;
     private String groupName;

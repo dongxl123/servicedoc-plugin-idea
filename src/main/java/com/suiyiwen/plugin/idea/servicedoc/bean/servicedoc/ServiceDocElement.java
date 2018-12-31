@@ -1,7 +1,5 @@
 package com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc;
 
-import com.suiyiwen.plugin.idea.servicedoc.bean.ServiceDocTag;
-
 import java.io.Serializable;
 
 /**
@@ -10,5 +8,4 @@ import java.io.Serializable;
  */
 public interface ServiceDocElement extends Serializable {
 
-    ServiceDocTag getTag();
 }
