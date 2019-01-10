@@ -8,16 +8,21 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author dongxuanliang252
  * @date 2018-12-29 20:16
  */
-public enum FiledBeanTreeUtils {
+public enum FieldBeanTreeUtils {
 
     INSTANCE;
 
-    public List<FieldBean> toTreeList(List<AbstractServiceField> serviceFieldList) {
+    public List<FieldBean> toTreeFieldBeanList(List<AbstractServiceField> serviceFieldList) {
+        if (CollectionUtils.isEmpty(serviceFieldList)) {
+            return null;
+        }
         List<FieldBean> fieldBeanList = new ArrayList<>();
         for (AbstractServiceField field : serviceFieldList) {
             if (StringUtils.isBlank(field.getField())) {
@@ -28,7 +33,7 @@ public enum FiledBeanTreeUtils {
         return fieldBeanList;
     }
 
-    private FieldBean putRecursiveNode(List<FieldBean> fieldBeanList, AbstractServiceField newField) {
+    private void putRecursiveNode(List<FieldBean> fieldBeanList, AbstractServiceField newField) {
         if (newField == null || StringUtils.isBlank(newField.getField())) {
             throw new IllegalArgumentException("text can not be blank");
         }
@@ -42,27 +47,28 @@ public enum FiledBeanTreeUtils {
             String shortName = shortNames[i];
             FieldBean existNode = findNode(thisFieldBeanList, shortName);
             if (existNode == null) {
-                FieldBean fieldBean = new FieldBean();
-                fieldBean.setName(shortName);
-                fieldBean.setChildFieldList(new ArrayList<>());
-                thisFieldBeanList.add(fieldBean);
-                thisFieldBeanList = fieldBean.getChildFieldList();
+                FieldBean newNode = new FieldBean();
+                newNode.setName(shortName);
+                newNode.setChildFieldList(new ArrayList<>());
+                thisFieldBeanList.add(newNode);
+                thisFieldBeanList = newNode.getChildFieldList();
             } else {
                 thisFieldBeanList = existNode.getChildFieldList();
             }
         }
         //thisNode
         FieldBean existNode = findNode(thisFieldBeanList, shortNames[shortNames.length - 1]);
-        FieldBean thisNode = new FieldBean();
-        thisNode.setName(newField.getField());
-        thisNode.setType(newField.getType());
-        thisNode.setDescription(newField.getDescription());
         if (existNode == null) {
+            FieldBean thisNode = new FieldBean();
+            thisNode.setName(newField.getField());
+            thisNode.setType(newField.getType());
+            thisNode.setChildFieldList(new ArrayList<>());
+            thisNode.setDescription(newField.getDescription());
             thisFieldBeanList.add(thisNode);
         } else if (StringUtils.isBlank(existNode.getType())) {
-            existNode = thisNode;
+            existNode.setType(newField.getType());
+            existNode.setDescription(newField.getDescription());
         }
-        return thisNode;
     }
 
     private FieldBean findNode(List<FieldBean> fieldBeanList, String shortName) {
@@ -78,6 +84,9 @@ public enum FiledBeanTreeUtils {
     }
 
     public <T extends AbstractServiceField> List<AbstractServiceField> toServiceFieldTagList(String title, List<FieldBean> fieldBeanList, Class<T> cls) {
+        if (CollectionUtils.isEmpty(fieldBeanList)) {
+            return null;
+        }
         List<AbstractServiceField> serviceFieldList = new ArrayList<>();
         for (FieldBean field : fieldBeanList) {
             if (StringUtils.isBlank(field.getName())) {
@@ -96,8 +105,8 @@ public enum FiledBeanTreeUtils {
         if (field == null) {
             return;
         }
-        try {
-            AbstractServiceField serviceField = cls.newInstance();
+        AbstractServiceField serviceField = ClassUtils.INSTANCE.newInstance(cls);
+        if (serviceField != null) {
             if (StringUtils.isNotBlank(title)) {
                 serviceField.setGroup(title);
             }
@@ -105,10 +114,6 @@ public enum FiledBeanTreeUtils {
             serviceField.setField(field.getName());
             serviceField.setDescription(field.getDescription());
             serviceFieldList.add(serviceField);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
         }
         prefix = StringUtils.isBlank(prefix) ? field.getName() : prefix + ServiceDocConstant.CHAR_DOT + field.getName();
         while (CollectionUtils.isNotEmpty(field.getChildFieldList())) {
@@ -117,4 +122,26 @@ public enum FiledBeanTreeUtils {
             }
         }
     }
+
+    public List<FieldBean> merge(List<FieldBean> newFieldList, List<FieldBean> oldFieldList) {
+        if (CollectionUtils.isEmpty(newFieldList)) {
+            return null;
+        }
+        if (CollectionUtils.isEmpty(oldFieldList)) {
+            return newFieldList;
+        }
+        Map<String, FieldBean> oldFieldMap = oldFieldList.stream().collect(Collectors.toMap(o -> o.getName(), o -> o));
+        for (FieldBean newField : newFieldList) {
+            String name = newField.getName();
+            if (oldFieldMap.containsKey(name)) {
+                FieldBean oldField = oldFieldMap.get(name);
+                if (StringUtils.isBlank(newField.getDescription())) {
+                    newField.setDescription(oldField.getDescription());
+                }
+                newField.setChildFieldList(merge(newField.getChildFieldList(), oldField.getChildFieldList()));
+            }
+        }
+        return newFieldList;
+    }
+
 }

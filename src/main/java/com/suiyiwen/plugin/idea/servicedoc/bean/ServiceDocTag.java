@@ -9,7 +9,7 @@ import com.suiyiwen.plugin.idea.servicedoc.parser.*;
  */
 public enum ServiceDocTag {
 
-    service(false, CommonServiceTextProcessor.class, ServiceDocTag.TEXT_REGEXP, Service.class),
+    service(false, CommonServiceNameTextProcessor.class, ServiceDocTag.NAME_TEXT_REGEXP, Service.class),
     serviceVersion(false, CommonServiceTextProcessor.class, ServiceDocTag.VERSION_REGEXP, ServiceVersion.class),
     serviceAuthor(false, CommonServiceTextProcessor.class, ServiceDocTag.TEXT_REGEXP, ServiceAuthor.class),
     serviceDescription(false, CommonServiceTextProcessor.class, ServiceDocTag.TEXT_REGEXP, ServiceDescription.class),
@@ -23,6 +23,7 @@ public enum ServiceDocTag {
 
     private static final String VERSION_REGEXP = "^(\\d+\\.\\d+\\.\\d+)$";
     private static final String TEXT_REGEXP = "^(.*)$";
+    private static final String NAME_TEXT_REGEXP = "^([^\\s]*)\\s*(.+)$";
     private static final String FIELD_REGEXP = "^(\\([^\\(|^\\)]+\\))?\\s*(\\{[^\\{|^\\}]+\\})?\\s*([^\\s]+)\\s*([^\\s]*)\\s*$";
     private static final String EXAMPLE_REGEXP = "^([^\\s]+)\\s+(.+)$";
 

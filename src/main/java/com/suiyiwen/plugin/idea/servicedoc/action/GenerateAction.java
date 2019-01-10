@@ -1,22 +1,17 @@
 package com.suiyiwen.plugin.idea.servicedoc.action;
 
-import com.alibaba.fastjson.JSON;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
-import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.ServiceDocCommentBean;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
-import com.suiyiwen.plugin.idea.servicedoc.utils.DialogHelper;
-import com.suiyiwen.plugin.idea.servicedoc.utils.ServiceDocUtils;
+import com.suiyiwen.plugin.idea.servicedoc.helper.DialogHelper;
 
 /**
  * @author dongxuanliang252
@@ -29,27 +24,25 @@ public class GenerateAction extends AnAction {
      */
     @Override
     public void actionPerformed(AnActionEvent e) {
-        //dfdsaffa
-        Project product = e.getProject();
+        Project project = e.getProject();
         PsiFile psiFile = e.getData(LangDataKeys.PSI_FILE);
         PsiElement psiElement = e.getData(LangDataKeys.PSI_ELEMENT);
         if (psiElement instanceof PsiMethod) {
             PsiMethod psiMethod = (PsiMethod) psiElement;
             PsiDocComment oldDocComment = null;
             PsiElement firstElement = psiMethod.getFirstChild();
+            DialogModel oldDialogModel = null;
             if (firstElement instanceof PsiDocComment) {
                 oldDocComment = (PsiDocComment) firstElement;
-                DialogModel oldDialogModel = ServiceDocUtils.INSTANCE.parseDialogModel(oldDocComment);
-                DialogHelper.INSTANCE.showGenerateDialog(oldDialogModel);
+                oldDialogModel = DialogHelper.INSTANCE.parse(oldDocComment);
             }
-            DialogModel currentDialogModel = ServiceDocUtils.INSTANCE.getCurrentDialogModel(psiElement);
-
+            DialogModel newDialogModel = DialogHelper.INSTANCE.createNewDialogModel(psiMethod);
+            DialogModel mergeDialogModel = DialogHelper.INSTANCE.mergeDialogModel(newDialogModel, oldDialogModel);
+            DialogHelper.INSTANCE.showGenerateDialog(mergeDialogModel);
             System.out.println("serviceDoc plugin action 1");
         } else {
-            Notification notification = new Notification(ServiceDocConstant.NOTIFICATION_GROUP_DISPLAY_ID, ServiceDocConstant.NOTIFICATION_TITLE, ServiceDocConstant.NOTIFICATION_CONTENT, NotificationType.WARNING);
-            Notifications.Bus.notify(notification);
+            Messages.showWarningDialog(ServiceDocConstant.NOTIFICATION_CONTENT, ServiceDocConstant.NOTIFICATION_TITLE);
         }
-        System.out.println(123456789);
     }
 
 }

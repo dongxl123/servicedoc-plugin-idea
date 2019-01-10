@@ -2,6 +2,7 @@ package com.suiyiwen.plugin.idea.servicedoc.parser;
 
 import com.suiyiwen.plugin.idea.servicedoc.bean.ServiceDocTag;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.ServiceDocElement;
+import com.suiyiwen.plugin.idea.servicedoc.utils.ClassUtils;
 
 /**
  * @author dongxuanliang252
@@ -16,17 +17,13 @@ public enum TagProcessorFactory {
         if (tag == null) {
             return null;
         }
-        Class cls = tag.getProcessorCls();
-        try {
-            AbstractTagProcessor tagParser = (AbstractTagProcessor) cls.newInstance();
-            tagParser.setTag(tag);
-            return tagParser;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        Class<? extends AbstractTagProcessor> cls = tag.getProcessorCls();
+        AbstractTagProcessor tagParser = ClassUtils.INSTANCE.newInstance(cls);
+        if (tagParser == null) {
+            return null;
         }
-        return null;
+        tagParser.setTag(tag);
+        return tagParser;
     }
 
     public TagBuilder getTagBuilder(ServiceDocElement element) {
@@ -37,17 +34,13 @@ public enum TagProcessorFactory {
         if (tag == null) {
             return null;
         }
-        Class cls = tag.getProcessorCls();
-        try {
-            AbstractTagProcessor tagBuilder = (AbstractTagProcessor) cls.newInstance();
-            tagBuilder.setTag(tag);
-            return tagBuilder;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        Class<? extends AbstractTagProcessor> cls = tag.getProcessorCls();
+        AbstractTagProcessor tagBuilder = ClassUtils.INSTANCE.newInstance(cls);
+        if (tagBuilder == null) {
+            return null;
         }
-        return null;
+        tagBuilder.setTag(tag);
+        return tagBuilder;
     }
 
 }

@@ -6,6 +6,7 @@ package com.suiyiwen.plugin.idea.servicedoc.constant;
  */
 public interface ServiceDocConstant {
 
+    String DEFAULT_VERSION = "1.0.0";
     String TITLE_GENERATE_DIALOG = "ServiceDoc";
     String NOTIFICATION_GROUP_DISPLAY_ID = "ServiceDoc";
     String NOTIFICATION_TITLE = "ServiceDoc Notification";
@@ -19,5 +20,6 @@ public interface ServiceDocConstant {
     String CHAR_DOT = ".";
     String CHAR_COMMA = ",";
     String TAG_TEXT_DEFAULT_TITLE_RESULT_GROUP = "result";
-
+    int OBJECT_RESOLVE_MAX_DEPTH = 3;
+    int OBJECT_RESOLVE_DEPTH_START = 1;
 }

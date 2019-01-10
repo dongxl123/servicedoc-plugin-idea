@@ -22,8 +22,8 @@
     <!-- uncomment to enable plugin in all products
     <depends>com.intellij.modules.lang</depends>
     -->
-
     <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="com.suiyiwen.plugin.idea.servicedoc.component.ServiceDocSettings"/>
     </extensions>
 
     <application-components>

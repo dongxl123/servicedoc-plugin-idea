@@ -6,6 +6,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
  * @author dongxuanliang252
  * @date 2018-12-18 13:40
@@ -14,7 +15,8 @@ import java.util.List;
 @Setter
 public class DialogModel implements Serializable {
 
-    private String function;
+    private String serviceTitle;
+    private String serviceFunction;
     private String groupName;
     private String name;
     private String version;

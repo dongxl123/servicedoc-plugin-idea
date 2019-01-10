@@ -21,20 +21,18 @@ public class CommonServiceFieldProcessor extends AbstractTagProcessor {
             return null;
         }
         if (CollectionUtils.isNotEmpty(textList)) {
-            int i = 0;
+            boolean descFlag = false;
             for (String text : textList) {
                 if (StringUtils.startsWith(text, ServiceDocConstant.TAG_TEXT_OPEN_PAREN) && StringUtils.endsWith(text, ServiceDocConstant.TAG_TEXT_CLOSE_PAREN)) {
                     element.setGroup(StringUtils.strip(text, String.format("%s%s", ServiceDocConstant.TAG_TEXT_OPEN_PAREN, ServiceDocConstant.TAG_TEXT_CLOSE_PAREN)));
                 } else if (StringUtils.startsWith(text, ServiceDocConstant.TAG_TEXT_OPEN_BRACE) && StringUtils.endsWith(text, ServiceDocConstant.TAG_TEXT_CLOSE_BRACE)) {
                     String typeName = StringUtils.strip(text, String.format("%s%s", ServiceDocConstant.TAG_TEXT_OPEN_BRACE, ServiceDocConstant.TAG_TEXT_CLOSE_BRACE));
                     element.setType(typeName);
-                } else {
-                    i++;
-                    if (i > 0) {
-                        element.setField(text);
-                    } else if (i > 1) {
-                        element.setDescription(text);
-                    }
+                } else if (!descFlag) {
+                    element.setField(text);
+                    descFlag = true;
+                } else if (StringUtils.isBlank(element.getDescription())) {
+                    element.setDescription(text);
                 }
             }
         }

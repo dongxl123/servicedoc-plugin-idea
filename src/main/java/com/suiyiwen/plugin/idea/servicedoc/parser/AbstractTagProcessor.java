@@ -3,6 +3,7 @@ package com.suiyiwen.plugin.idea.servicedoc.parser;
 import com.suiyiwen.plugin.idea.servicedoc.bean.ServiceDocTag;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.ServiceDocElement;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
+import com.suiyiwen.plugin.idea.servicedoc.utils.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,14 +62,7 @@ public abstract class AbstractTagProcessor implements TagParser, TagBuilder {
 
 
     protected <T extends ServiceDocElement> T newElementInstance() {
-        ServiceDocElement element = null;
-        try {
-            element = tag.getElementCls().newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        ServiceDocElement element = ClassUtils.INSTANCE.newInstance(tag.getElementCls());
         if (element == null) {
             return null;
         }

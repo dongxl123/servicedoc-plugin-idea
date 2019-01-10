@@ -2,7 +2,6 @@ package com.suiyiwen.plugin.idea.servicedoc.parser;
 
 import com.suiyiwen.plugin.idea.servicedoc.bean.ServiceDocTag;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.*;
-import com.suiyiwen.plugin.idea.servicedoc.utils.ServiceDocUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,12 +22,12 @@ public class ServiceFlowTagGroupProcessor implements TagGroupParser, TagGroupBui
             return null;
         }
         for (ServiceDocElement element : elements) {
-            if (ServiceDocTag.serviceParam.getElementCls().isInstance(element)) {
+            if (element instanceof AbstractServiceField) {
                 if (group.getFieldList() == null) {
                     group.setFieldList(new ArrayList<>());
                 }
                 group.getFieldList().add((AbstractServiceField) element);
-            } else if (ServiceDocTag.serviceParamExample.getElementCls().isInstance(element)) {
+            } else if (element instanceof AbstractServiceExample) {
                 group.setExample((AbstractServiceExample) element);
             }
         }
