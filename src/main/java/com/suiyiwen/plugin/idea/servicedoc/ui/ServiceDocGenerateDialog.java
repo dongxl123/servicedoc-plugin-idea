@@ -2,6 +2,7 @@ package com.suiyiwen.plugin.idea.servicedoc.ui;
 
 import com.alibaba.fastjson.JSON;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.psi.PsiElement;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.ParamBean;
 import com.suiyiwen.plugin.idea.servicedoc.component.ServiceDocSettings;
@@ -9,6 +10,7 @@ import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import com.suiyiwen.plugin.idea.servicedoc.helper.DialogHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -28,10 +30,12 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
     private JTable resultTable;
     private DialogModel initModel;
     private JButton testButton;
+    private PsiElement psiElement;
 
-    public ServiceDocGenerateDialog(boolean canBeParent, DialogModel initModel) {
+    public ServiceDocGenerateDialog(boolean canBeParent, @NotNull DialogModel initModel, @NotNull PsiElement psiElement) {
         super(canBeParent);
         this.initModel = initModel;
+        this.psiElement = psiElement;
         init();
         setTitle(ServiceDocConstant.TITLE_GENERATE_DIALOG);
         testButton.addActionListener(e -> {
@@ -76,7 +80,7 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
     }
 
     private void generateComment() {
-        System.out.println("comment:" + DialogHelper.INSTANCE.build(getCurrentModel()));
+        DialogHelper.INSTANCE.writeJavaDoc(this.initModel, psiElement);
     }
 
     /**
@@ -145,13 +149,13 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
         }
         if (CollectionUtils.isNotEmpty(model.getParamList())) {
             for (ParamBean paramBean : model.getParamList()) {
-                JTextArea textArea = new JTextArea(JSON.toJSONString(paramBean.getFieldList()));
+                JTextArea textArea = new JTextArea(JSON.toJSONString(paramBean));
                 paramTabbedPanel.addTab(paramBean.getTitle(), textArea);
             }
         }
         if (model.getResult() != null) {
-            JTextArea textArea = new JTextArea(JSON.toJSONString(model.getResult().getFieldList()));
-            resultTable.setToolTipText(JSON.toJSONString(model.getResult().getFieldList()));
+            JTextArea textArea = new JTextArea(JSON.toJSONString(model.getResult()));
+            resultTable.setToolTipText(JSON.toJSONString(model.getResult()));
             resultTable.add(textArea);
         }
     }

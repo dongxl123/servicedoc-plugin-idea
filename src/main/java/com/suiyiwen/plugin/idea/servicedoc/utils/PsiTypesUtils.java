@@ -4,6 +4,9 @@ import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.PsiClassReferenceType;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,4 +72,35 @@ public enum PsiTypesUtils {
         Project project = CommonDataKeys.PROJECT.getData(DataManager.getInstance().getDataContext());
         return JavaPsiFacade.getElementFactory(project).createTypeByFQClassName(fQClassName);
     }
+
+    public boolean isExtractEndPsiType(PsiType psiType) {
+        if (psiType instanceof PsiClassReferenceType) {
+            if (PsiTypesUtils.INSTANCE.isBoxedType(psiType) || PsiTypesUtils.INSTANCE.isString(psiType) || PsiTypesUtils.INSTANCE.isMap(psiType) || PsiTypesUtils.INSTANCE.isEnum(psiType)) {
+                return true;
+            } else if (isCollection(psiType)) {
+                PsiType[] genericPsiTypes = ((PsiClassReferenceType) psiType).getParameters();
+                if (ArrayUtils.isNotEmpty(genericPsiTypes)) {
+                    return isExtractEndPsiType(genericPsiTypes[0]);
+                } else {
+                    return true;
+                }
+            }
+        } else if (psiType instanceof PsiPrimitiveType) {
+            return true;
+        } else if (psiType instanceof PsiArrayType) {
+            PsiArrayType arrayType = (PsiArrayType) psiType;
+            PsiType componentType = arrayType.getComponentType();
+            return isExtractEndPsiType(componentType);
+        }
+        return false;
+    }
+
+    public String getPresentableText(PsiType psiType) {
+        String presentableText = psiType.getPresentableText();
+        if (StringUtils.isNotBlank(presentableText)) {
+            return StringUtils.remove(presentableText, StringUtils.SPACE);
+        }
+        return CommonClassNames.JAVA_LANG_OBJECT_SHORT;
+    }
+
 }

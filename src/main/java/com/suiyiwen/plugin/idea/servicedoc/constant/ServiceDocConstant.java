@@ -11,12 +11,11 @@ public interface ServiceDocConstant {
     String NOTIFICATION_GROUP_DISPLAY_ID = "ServiceDoc";
     String NOTIFICATION_TITLE = "ServiceDoc Notification";
     String NOTIFICATION_CONTENT = "please focus over java method";
-    String TAG_PREFIX = "service";
+    String TAG_PREFIX = "manager";
     String TAG_TEXT_OPEN_PAREN = "(";
     String TAG_TEXT_CLOSE_PAREN = ")";
     String TAG_TEXT_OPEN_BRACE = "{";
     String TAG_TEXT_CLOSE_BRACE = "}";
-    String TAG_TEXT_PREFIX = "@";
     String CHAR_DOT = ".";
     String CHAR_COMMA = ",";
     String TAG_TEXT_DEFAULT_TITLE_RESULT_GROUP = "result";

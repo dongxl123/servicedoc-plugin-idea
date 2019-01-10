@@ -116,7 +116,7 @@ public enum FieldBeanTreeUtils {
             serviceFieldList.add(serviceField);
         }
         prefix = StringUtils.isBlank(prefix) ? field.getName() : prefix + ServiceDocConstant.CHAR_DOT + field.getName();
-        while (CollectionUtils.isNotEmpty(field.getChildFieldList())) {
+        if (CollectionUtils.isNotEmpty(field.getChildFieldList())) {
             for (FieldBean childField : field.getChildFieldList()) {
                 putRecursiveNode(serviceFieldList, childField, title, prefix, cls);
             }

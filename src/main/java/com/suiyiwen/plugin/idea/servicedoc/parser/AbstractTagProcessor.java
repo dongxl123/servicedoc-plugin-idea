@@ -1,6 +1,7 @@
 package com.suiyiwen.plugin.idea.servicedoc.parser;
 
 import com.suiyiwen.plugin.idea.servicedoc.bean.ServiceDocTag;
+import com.suiyiwen.plugin.idea.servicedoc.bean.javadoc.JavaDocElements;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.ServiceDocElement;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import com.suiyiwen.plugin.idea.servicedoc.utils.ClassUtils;
@@ -44,7 +45,7 @@ public abstract class AbstractTagProcessor implements TagParser, TagBuilder {
             }
             return parse(textList);
         } catch (Exception e) {
-            log.error("TagParser parse error, text:{}, regExp:{}", text, tag.getRegExp(), e);
+            log.error("TagParser parseOldDialogModel error, text:{}, regExp:{}", text, tag.getRegExp(), e);
         }
         return null;
     }
@@ -54,7 +55,7 @@ public abstract class AbstractTagProcessor implements TagParser, TagBuilder {
     @Override
     public String build(ServiceDocElement element) {
         StringBuilder sb = new StringBuilder();
-        sb.append(ServiceDocConstant.TAG_TEXT_PREFIX).append(tag.name()).append(StringUtils.SPACE).append(buildValue(element)).append(System.lineSeparator());
+        sb.append(JavaDocElements.NEW_LINE.getPresentation()).append(JavaDocElements.LINE_START.getPresentation()).append(JavaDocElements.WHITE_SPACE.getPresentation()).append(JavaDocElements.TAG_START.getPresentation()).append(tag.name()).append(JavaDocElements.WHITE_SPACE.getPresentation()).append(buildValue(element));
         return sb.toString();
     }
 

@@ -75,7 +75,7 @@ public enum ConvertUtils {
                 exampleBean.setTitle(firstServiceField.getGroup());
             }
             if (serviceFieldList.size() == 1 && firstServiceField.getGroup().equals(firstServiceField.getField())) {
-                exampleBean.setSingleFlag(Boolean.TRUE);
+                exampleBean.setSpecialFlag(Boolean.TRUE);
             }
             exampleBean.setFieldList(FieldBeanTreeUtils.INSTANCE.toTreeFieldBeanList(serviceFieldList));
         }

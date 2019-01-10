@@ -3,6 +3,7 @@ package com.suiyiwen.plugin.idea.servicedoc.utils;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.javadoc.PsiDocTag;
 import com.suiyiwen.plugin.idea.servicedoc.bean.ServiceDocTag;
+import com.suiyiwen.plugin.idea.servicedoc.bean.javadoc.JavaDocElements;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.*;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import com.suiyiwen.plugin.idea.servicedoc.parser.*;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @author dongxuanliang252
  * @date 2018-12-18 12:05
  */
-public enum ServiceDoElementUtils {
+public enum ServiceDocElementUtils {
 
     INSTANCE;
 
@@ -91,6 +92,7 @@ public enum ServiceDoElementUtils {
             return StringUtils.EMPTY;
         }
         StringBuilder sb = new StringBuilder();
+        sb.append(JavaDocElements.STARTING.getPresentation()).append(JavaDocElements.LINE_START.getPresentation());
         if (commentBean.getService() != null) {
             sb.append(buildServiceDocElementComment(commentBean.getService()));
         }
@@ -119,6 +121,7 @@ public enum ServiceDoElementUtils {
         if (serviceResultGroup != null) {
             sb.append(tagGroupBuilder.build(serviceResultGroup));
         }
+        sb.append(JavaDocElements.NEW_LINE.getPresentation()).append(JavaDocElements.LINE_START.getPresentation()).append(JavaDocElements.ENDING.getPresentation());
         return sb.toString();
     }
 

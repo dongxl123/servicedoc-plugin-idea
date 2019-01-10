@@ -1,5 +1,6 @@
 package com.suiyiwen.plugin.idea.servicedoc.parser;
 
+import com.suiyiwen.plugin.idea.servicedoc.bean.javadoc.JavaDocElements;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.AbstractServiceExample;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.ServiceDocElement;
 import org.apache.commons.collections.CollectionUtils;
@@ -31,8 +32,8 @@ public class CommonExampleProcessor extends AbstractTagProcessor {
         if (element instanceof AbstractServiceExample) {
             AbstractServiceExample tElement = (AbstractServiceExample) element;
             StringBuilder sb = new StringBuilder();
-            sb.append(StringUtils.trimToEmpty(tElement.getTitle())).append(System.lineSeparator());
-            sb.append(StringUtils.trimToEmpty(tElement.getExample()));
+            sb.append(StringUtils.trimToEmpty(tElement.getTitle()));
+            sb.append(JavaDocElements.NEW_LINE.getPresentation()).append(StringUtils.trimToEmpty(tElement.getExample()));
             return sb.toString();
         }
         return StringUtils.EMPTY;

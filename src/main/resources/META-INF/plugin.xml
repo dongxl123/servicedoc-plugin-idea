@@ -27,6 +27,11 @@
     </extensions>
 
     <application-components>
+        <component>
+            <interface-class>com.suiyiwen.plugin.idea.servicedoc.component.operation.JavaDocWriter</interface-class>
+            <implementation-class>com.suiyiwen.plugin.idea.servicedoc.component.operation.impl.JavaDocWriterImpl
+            </implementation-class>
+        </component>
     </application-components>
 
     <project-components>

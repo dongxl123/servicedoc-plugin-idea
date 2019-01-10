@@ -1,17 +1,17 @@
 package com.suiyiwen.plugin.idea.servicedoc.helper;
 
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.AbstractExampleBean;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.ServiceDocCommentBean;
 import com.suiyiwen.plugin.idea.servicedoc.component.ServiceDocSettings;
+import com.suiyiwen.plugin.idea.servicedoc.component.operation.JavaDocWriter;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import com.suiyiwen.plugin.idea.servicedoc.ui.ServiceDocGenerateDialog;
-import com.suiyiwen.plugin.idea.servicedoc.utils.ConvertUtils;
-import com.suiyiwen.plugin.idea.servicedoc.utils.FieldBeanTreeUtils;
-import com.suiyiwen.plugin.idea.servicedoc.utils.PsiElementParseUtils;
-import com.suiyiwen.plugin.idea.servicedoc.utils.ServiceDoElementUtils;
+import com.suiyiwen.plugin.idea.servicedoc.utils.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,19 +28,26 @@ public enum DialogHelper {
 
     INSTANCE;
 
-    public void showGenerateDialog(DialogModel model) {
-        ServiceDocGenerateDialog dialog = new ServiceDocGenerateDialog(false, model);
+    private JavaDocWriter writer = ServiceManager.getService(JavaDocWriter.class);
+
+    public void showGenerateDialog(DialogModel model, PsiElement psiElement) {
+        ServiceDocGenerateDialog dialog = new ServiceDocGenerateDialog(false, model, psiElement);
         dialog.show();
     }
 
-    public DialogModel parse(PsiDocComment docComment) {
-        ServiceDocCommentBean commentBean = ServiceDoElementUtils.INSTANCE.parse(docComment);
+    public DialogModel parseOldDialogModel(PsiDocComment docComment) {
+        ServiceDocCommentBean commentBean = ServiceDocElementUtils.INSTANCE.parse(docComment);
         return ConvertUtils.INSTANCE.convertCommentBean2DialogModel(commentBean);
     }
 
-    public String build(DialogModel model) {
+    public void writeJavaDoc(DialogModel model, PsiElement psiElement) {
+        PsiDocComment javaDoc = PsiDocCommentUtils.INSTANCE.createPsiDocComment(buildCommentText(model));
+        writer.write(javaDoc, psiElement);
+    }
+
+    private String buildCommentText(DialogModel model) {
         ServiceDocCommentBean commentBean = ConvertUtils.INSTANCE.convertDialogModel2CommentBean(model);
-        return ServiceDoElementUtils.INSTANCE.build(commentBean);
+        return ServiceDocElementUtils.INSTANCE.build(commentBean);
     }
 
     public DialogModel createNewDialogModel(PsiMethod element) {
@@ -48,20 +55,19 @@ public enum DialogHelper {
             return null;
         }
         DialogModel dialogModel = new DialogModel();
-        dialogModel.setParamList(PsiElementParseUtils.INSTANCE.parseParamBeanList(element));
-        dialogModel.setResult(PsiElementParseUtils.INSTANCE.parseResultBean(element));
+        dialogModel.setParamList(DialogModelParseUtils.INSTANCE.parseParamBeanList(element));
+        dialogModel.setResult(DialogModelParseUtils.INSTANCE.parseResultBean(element));
         dialogModel.setVersion(ServiceDocConstant.DEFAULT_VERSION);
-        dialogModel.setServiceTitle(PsiElementParseUtils.INSTANCE.parseServiceTitle(element));
-        dialogModel.setServiceFunction(PsiElementParseUtils.INSTANCE.parseServiceFunction(element));
+        dialogModel.setServiceTitle(DialogModelParseUtils.INSTANCE.parseServiceTitle(element));
+        dialogModel.setServiceFunction(DialogModelParseUtils.INSTANCE.parseServiceFunction(element));
         ServiceDocSettings settings = ServiceDocSettings.getInstance();
         if (settings != null) {
             dialogModel.setAuthor(settings.getAuthor());
         }
         dialogModel.setGroupName(dialogModel.getServiceTitle());
-        dialogModel.setName(dialogModel.getServiceFunction());
+        dialogModel.setName(DialogModelParseUtils.INSTANCE.parseServiceName(element));
         return dialogModel;
     }
-
 
     public DialogModel mergeDialogModel(DialogModel newModel, DialogModel oldModel) {
         if (newModel == null && oldModel == null) {
