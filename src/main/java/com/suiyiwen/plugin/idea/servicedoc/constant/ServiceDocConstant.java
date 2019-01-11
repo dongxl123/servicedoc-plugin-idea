@@ -11,7 +11,7 @@ public interface ServiceDocConstant {
     String NOTIFICATION_GROUP_DISPLAY_ID = "ServiceDoc";
     String NOTIFICATION_TITLE = "ServiceDoc Notification";
     String NOTIFICATION_CONTENT = "please focus over java method";
-    String TAG_PREFIX = "manager";
+    String TAG_PREFIX = "service";
     String TAG_TEXT_OPEN_PAREN = "(";
     String TAG_TEXT_CLOSE_PAREN = ")";
     String TAG_TEXT_OPEN_BRACE = "{";
@@ -19,6 +19,6 @@ public interface ServiceDocConstant {
     String CHAR_DOT = ".";
     String CHAR_COMMA = ",";
     String TAG_TEXT_DEFAULT_TITLE_RESULT_GROUP = "result";
-    int OBJECT_RESOLVE_MAX_DEPTH = 3;
+    int OBJECT_RESOLVE_MAX_DEPTH = 4;
     int OBJECT_RESOLVE_DEPTH_START = 1;
 }

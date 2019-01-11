@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 public abstract class AbstractExampleBean implements Serializable {
     private String title;
-    private Boolean specialFlag;
     private List<FieldBean> fieldList;
     private String example;
 

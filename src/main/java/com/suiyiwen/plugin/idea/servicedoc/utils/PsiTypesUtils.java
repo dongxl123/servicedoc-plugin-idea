@@ -4,7 +4,9 @@ import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.PsiClassReferenceType;
+import com.intellij.psi.javadoc.PsiDocComment;
+import com.suiyiwen.plugin.idea.servicedoc.bean.javadoc.JavaDocElements;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -51,8 +53,8 @@ public enum PsiTypesUtils {
         return CommonClassNames.JAVA_LANG_STRING.equals(canonicalText);
     }
 
-    public boolean isCollection(PsiType psiType) {
-        return isAssignableFrom(CommonClassNames.JAVA_UTIL_COLLECTION, psiType);
+    public boolean isIterable(PsiType psiType) {
+        return isAssignableFrom(CommonClassNames.JAVA_LANG_ITERABLE, psiType) || isAssignableFrom(CommonClassNames.JAVA_UTIL_ITERATOR, psiType);
     }
 
     public boolean isEnum(PsiType psiType) {
@@ -74,26 +76,24 @@ public enum PsiTypesUtils {
     }
 
     public boolean isExtractEndPsiType(PsiType psiType) {
-        if (psiType instanceof PsiClassReferenceType) {
+        if (psiType instanceof PsiClassType) {
             if (PsiTypesUtils.INSTANCE.isBoxedType(psiType) || PsiTypesUtils.INSTANCE.isString(psiType) || PsiTypesUtils.INSTANCE.isMap(psiType) || PsiTypesUtils.INSTANCE.isEnum(psiType)) {
                 return true;
-            } else if (isCollection(psiType)) {
-                PsiType[] genericPsiTypes = ((PsiClassReferenceType) psiType).getParameters();
-                if (ArrayUtils.isNotEmpty(genericPsiTypes)) {
-                    return isExtractEndPsiType(genericPsiTypes[0]);
-                } else {
-                    return true;
-                }
             }
         } else if (psiType instanceof PsiPrimitiveType) {
             return true;
-        } else if (psiType instanceof PsiArrayType) {
-            PsiArrayType arrayType = (PsiArrayType) psiType;
-            PsiType componentType = arrayType.getComponentType();
-            return isExtractEndPsiType(componentType);
         }
         return false;
     }
+
+    public boolean hasGenericTypes(PsiType psiType) {
+        if (psiType instanceof PsiClassType) {
+            PsiType[] genericPsiTypes = ((PsiClassType) psiType).getParameters();
+            return ArrayUtils.isNotEmpty(genericPsiTypes);
+        }
+        return false;
+    }
+
 
     public String getPresentableText(PsiType psiType) {
         String presentableText = psiType.getPresentableText();
@@ -103,4 +103,26 @@ public enum PsiTypesUtils {
         return CommonClassNames.JAVA_LANG_OBJECT_SHORT;
     }
 
+    public String getFieldDescription(PsiField psiField) {
+        PsiDocComment psiDocComment = psiField.getDocComment();
+        if (psiDocComment == null) {
+            return null;
+        }
+        PsiElement[] descriptions = psiDocComment.getDescriptionElements();
+        if (ArrayUtils.isEmpty(descriptions)) {
+            return null;
+        }
+        StringBuffer sb = new StringBuffer();
+        for (PsiElement description : descriptions) {
+            sb.append(description.getText());
+        }
+        return StringUtils.remove(sb.toString(), JavaDocElements.NEW_LINE.getPresentation());
+    }
+
+    public PsiType createGenericPsiType(PsiType psiType, PsiSubstitutor psiSubstitutor) {
+        if (psiType instanceof PsiClassType && MapUtils.isNotEmpty(psiSubstitutor.getSubstitutionMap())) {
+            return psiSubstitutor.substitute(psiType);
+        }
+        return psiType;
+    }
 }

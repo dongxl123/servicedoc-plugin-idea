@@ -60,7 +60,7 @@ public enum FieldBeanTreeUtils {
         FieldBean existNode = findNode(thisFieldBeanList, shortNames[shortNames.length - 1]);
         if (existNode == null) {
             FieldBean thisNode = new FieldBean();
-            thisNode.setName(newField.getField());
+            thisNode.setName(shortNames[shortNames.length - 1]);
             thisNode.setType(newField.getType());
             thisNode.setChildFieldList(new ArrayList<>());
             thisNode.setDescription(newField.getDescription());
@@ -105,17 +105,21 @@ public enum FieldBeanTreeUtils {
         if (field == null) {
             return;
         }
+        if (StringUtils.isBlank(prefix)) {
+            prefix = field.getName();
+        } else {
+            prefix = prefix + ServiceDocConstant.CHAR_DOT + field.getName();
+        }
         AbstractServiceField serviceField = ClassUtils.INSTANCE.newInstance(cls);
         if (serviceField != null) {
             if (StringUtils.isNotBlank(title)) {
                 serviceField.setGroup(title);
             }
             serviceField.setType(field.getType());
-            serviceField.setField(field.getName());
+            serviceField.setField(prefix);
             serviceField.setDescription(field.getDescription());
             serviceFieldList.add(serviceField);
         }
-        prefix = StringUtils.isBlank(prefix) ? field.getName() : prefix + ServiceDocConstant.CHAR_DOT + field.getName();
         if (CollectionUtils.isNotEmpty(field.getChildFieldList())) {
             for (FieldBean childField : field.getChildFieldList()) {
                 putRecursiveNode(serviceFieldList, childField, title, prefix, cls);

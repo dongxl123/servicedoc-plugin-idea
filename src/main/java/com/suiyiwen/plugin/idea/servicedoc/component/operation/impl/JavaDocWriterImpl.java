@@ -58,7 +58,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
             checkFilesAccess(beforeElement);
         } catch (FileNotValidException e) {
             LOGGER.error(e.getMessage());
-            Messages.showErrorDialog("Javadocs plugin is not available, cause: " + e.getMessage(), "Javadocs plugin");
+            Messages.showErrorDialog("serviceDoc plugin is not available, cause: " + e.getMessage(), "serviceDoc plugin");
             return;
         }
 
@@ -66,7 +66,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         RunResult result = command.execute();
         if (result.hasException()) {
             LOGGER.error(result.getThrowable());
-            Messages.showErrorDialog("Javadocs plugin is not available, cause: " + result.getThrowable().getMessage(), "Javadocs plugin");
+            Messages.showErrorDialog("serviceDoc plugin is not available, cause: " + result.getThrowable().getMessage(), "serviceDoc plugin");
         }
     }
 
@@ -76,7 +76,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
             checkFilesAccess(beforeElement);
         } catch (FileNotValidException e) {
             LOGGER.error(e);
-            Messages.showErrorDialog("Javadocs plugin is not available, cause: " + e.getMessage(), "Javadocs plugin");
+            Messages.showErrorDialog("serviceDoc plugin is not available, cause: " + e.getMessage(), "serviceDoc plugin");
             return;
         }
 
@@ -84,7 +84,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         RunResult result = command.execute();
         if (result.hasException()) {
             LOGGER.error(result.getThrowable());
-            Messages.showErrorDialog("Javadocs plugin is not available, cause: " + result.getThrowable().getMessage(), "Javadocs plugin");
+            Messages.showErrorDialog("serviceDoc plugin is not available, cause: " + result.getThrowable().getMessage(), "serviceDoc plugin");
         }
     }
 

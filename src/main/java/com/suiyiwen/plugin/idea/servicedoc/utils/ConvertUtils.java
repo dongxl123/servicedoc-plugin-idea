@@ -74,9 +74,6 @@ public enum ConvertUtils {
             if (StringUtils.isBlank(exampleBean.getTitle())) {
                 exampleBean.setTitle(firstServiceField.getGroup());
             }
-            if (serviceFieldList.size() == 1 && firstServiceField.getGroup().equals(firstServiceField.getField())) {
-                exampleBean.setSpecialFlag(Boolean.TRUE);
-            }
             exampleBean.setFieldList(FieldBeanTreeUtils.INSTANCE.toTreeFieldBeanList(serviceFieldList));
         }
         return exampleBean;
@@ -123,17 +120,17 @@ public enum ConvertUtils {
         if (CollectionUtils.isNotEmpty(dialogModel.getParamList())) {
             List<ServiceParamTagGroup> tagGroupList = new ArrayList<>();
             for (ParamBean paramBean : dialogModel.getParamList()) {
-                ServiceParamTagGroup tagGroup = convertExampleBean2TagGroupBean(paramBean, ServiceParamTagGroup.class, ServiceParamExample.class);
+                ServiceParamTagGroup tagGroup = convertExampleBean2TagGroupBean(paramBean, ServiceParamTagGroup.class, ServiceParamField.class, ServiceParamExample.class);
                 tagGroupList.add(tagGroup);
             }
             commentBean.setServiceParamGroupList(tagGroupList);
         }
         ResultBean resultBean = dialogModel.getResult();
-        commentBean.setServiceResultGroup(convertExampleBean2TagGroupBean(resultBean, ServiceResultTagGroup.class, ServiceResultExample.class));
+        commentBean.setServiceResultGroup(convertExampleBean2TagGroupBean(resultBean, ServiceResultTagGroup.class, ServiceResultField.class, ServiceResultExample.class));
         return commentBean;
     }
 
-    private <T extends AbstractServiceFlowTagGroup, K extends AbstractServiceExample> T convertExampleBean2TagGroupBean(AbstractExampleBean exampleBean, Class<T> tagGroupCls, Class<K> exampleCls) {
+    private <T extends AbstractServiceFlowTagGroup, F extends AbstractServiceField, K extends AbstractServiceExample> T convertExampleBean2TagGroupBean(AbstractExampleBean exampleBean, Class<T> tagGroupCls, Class<F> serviceFieldCls, Class<K> exampleCls) {
         if (exampleBean == null) {
             return null;
         }
@@ -148,7 +145,7 @@ public enum ConvertUtils {
             tagGroupBean.setExample(example);
         }
         if (exampleBean.getFieldList() != null) {
-            tagGroupBean.setFieldList(FieldBeanTreeUtils.INSTANCE.toServiceFieldTagList(StringUtils.defaultIfBlank(exampleBean.getTitle(), ServiceDocConstant.TAG_TEXT_DEFAULT_TITLE_RESULT_GROUP), exampleBean.getFieldList(), ServiceResultField.class));
+            tagGroupBean.setFieldList(FieldBeanTreeUtils.INSTANCE.toServiceFieldTagList(StringUtils.defaultIfBlank(exampleBean.getTitle(), ServiceDocConstant.TAG_TEXT_DEFAULT_TITLE_RESULT_GROUP), exampleBean.getFieldList(), serviceFieldCls));
         }
         return tagGroupBean;
     }

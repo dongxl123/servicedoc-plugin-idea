@@ -1,7 +1,6 @@
 package com.suiyiwen.plugin.idea.servicedoc.utils;
 
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.PsiClassReferenceType;
 import com.intellij.psi.util.PsiFormatUtil;
 import com.intellij.psi.util.PsiTypesUtil;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.AbstractExampleBean;
@@ -55,7 +54,6 @@ public enum DialogModelParseUtils {
         if (CollectionUtils.isNotEmpty(fieldBeanList) && fieldBeanList.size() == 1) {
             FieldBean firstFieldBean = fieldBeanList.get(0);
             if (StringUtils.isEmpty(firstFieldBean.getName())) {
-                exampleBean.setSpecialFlag(Boolean.TRUE);
                 firstFieldBean.setName(exampleBean.getTitle());
             }
         }
@@ -64,43 +62,55 @@ public enum DialogModelParseUtils {
 
     private List<FieldBean> parseRefFieldBeanList(PsiType psiType, int depth) {
         boolean isFirstDepth = ServiceDocConstant.OBJECT_RESOLVE_DEPTH_START == depth;
-        List<FieldBean> childFieldList = new ArrayList<>();
-        //boxedType, String, enum, map, primitiveType, need not extract array, need not extract Collection
+        if (isFirstDepth) {
+            depth++;
+        }
+        List<FieldBean> innerChildFieldList = new ArrayList<>();
+        //boxedType, String, enum, map, primitiveType
         if (PsiTypesUtils.INSTANCE.isExtractEndPsiType(psiType)) {
-            if (isFirstDepth) {
-                FieldBean fieldBean = new FieldBean();
-                fieldBean.setType(PsiTypesUtils.INSTANCE.getPresentableText(psiType));
-                childFieldList.add(fieldBean);
-            }
-        } else if (PsiTypesUtils.INSTANCE.isCollection(psiType)) {
-            PsiType[] genericPsiTypes = ((PsiClassReferenceType) psiType).getParameters();
+            //不处理
+        } else if (PsiTypesUtils.INSTANCE.isIterable(psiType)) {
+            PsiType[] genericPsiTypes = ((PsiClassType) psiType).getParameters();
             if (ArrayUtils.isNotEmpty(genericPsiTypes)) {
-                PsiType genericPsiType = genericPsiTypes[0];
-                childFieldList = parseRefFieldBeanList(genericPsiType, depth);
+                innerChildFieldList = parseRefFieldBeanList(genericPsiTypes[0], depth);
             }
-        } else if (psiType instanceof PsiClassReferenceType) {
+        } else if (psiType instanceof PsiClassType) {
             PsiClass psiClass = PsiTypesUtil.getPsiClass(psiType);
+            PsiSubstitutor psiSubstitutor = ((PsiClassType) psiType).resolveGenerics().getSubstitutor();
             for (PsiField psiField : psiClass.getAllFields()) {
                 if (PsiTypesUtils.INSTANCE.isVariable(psiField)) {
-                    childFieldList.add(parseFieldBean(psiField, depth));
+                    innerChildFieldList.add(parseFieldBean(psiField, psiSubstitutor, depth));
                 }
             }
         } else if (psiType instanceof PsiArrayType) {
             PsiArrayType arrayType = (PsiArrayType) psiType;
             PsiType componentType = arrayType.getComponentType();
-            childFieldList = parseRefFieldBeanList(componentType, depth);
+            innerChildFieldList = parseRefFieldBeanList(componentType, depth);
         }
-        if (CollectionUtils.isEmpty(childFieldList)) {
-            return null;
+        if (isFirstDepth) {
+            List<FieldBean> retChildFieldList = new ArrayList<>();
+            FieldBean fieldBean = new FieldBean();
+            fieldBean.setType(PsiTypesUtils.INSTANCE.getPresentableText(psiType));
+            if (CollectionUtils.isNotEmpty(innerChildFieldList)) {
+                fieldBean.setChildFieldList(innerChildFieldList);
+            }
+            retChildFieldList.add(fieldBean);
+            return retChildFieldList;
+        } else if (CollectionUtils.isNotEmpty(innerChildFieldList)) {
+            return innerChildFieldList;
         }
-        return childFieldList;
+        return null;
     }
 
-    private FieldBean parseFieldBean(PsiField psiField, int depth) {
+    private FieldBean parseFieldBean(PsiField psiField, PsiSubstitutor psiSubstitutor, int depth) {
         FieldBean fieldBean = new FieldBean();
         fieldBean.setName(psiField.getName());
         PsiType psiType = psiField.getType();
+        if (PsiTypesUtils.INSTANCE.hasGenericTypes(psiType)) {
+            psiType = PsiTypesUtils.INSTANCE.createGenericPsiType(psiType, psiSubstitutor);
+        }
         fieldBean.setType(PsiTypesUtils.INSTANCE.getPresentableText(psiType));
+        fieldBean.setDescription(PsiTypesUtils.INSTANCE.getFieldDescription(psiField));
         if (depth >= ServiceDocConstant.OBJECT_RESOLVE_MAX_DEPTH) {
             return fieldBean;
         }

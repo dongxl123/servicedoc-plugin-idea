@@ -29,7 +29,8 @@ public class ServiceDocActionManger {
             }
             DialogModel newDialogModel = DialogHelper.INSTANCE.createNewDialogModel(psiMethod);
             DialogModel mergeDialogModel = DialogHelper.INSTANCE.mergeDialogModel(newDialogModel, oldDialogModel);
-            DialogHelper.INSTANCE.showGenerateDialog(mergeDialogModel, psiElement);
+            DialogHelper.INSTANCE.writeJavaDoc(mergeDialogModel, psiElement);
+//            DialogHelper.INSTANCE.showGenerateDialog(mergeDialogModel, psiElement);
         } else {
             Messages.showWarningDialog(ServiceDocConstant.NOTIFICATION_CONTENT, ServiceDocConstant.NOTIFICATION_TITLE);
         }
