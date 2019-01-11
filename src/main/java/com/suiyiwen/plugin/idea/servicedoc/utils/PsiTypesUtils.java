@@ -125,4 +125,13 @@ public enum PsiTypesUtils {
         }
         return psiType;
     }
+
+    public boolean isPublicMethod(PsiMethod element) {
+        PsiModifierList psiModifierList = element.getModifierList();
+        if (psiModifierList.hasModifierProperty(PsiModifier.PUBLIC)) {
+            return true;
+        }
+        return false;
+    }
+
 }

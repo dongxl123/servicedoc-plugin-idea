@@ -10,7 +10,8 @@ public interface ServiceDocConstant {
     String TITLE_GENERATE_DIALOG = "ServiceDoc";
     String NOTIFICATION_GROUP_DISPLAY_ID = "ServiceDoc";
     String NOTIFICATION_TITLE = "ServiceDoc Notification";
-    String NOTIFICATION_CONTENT = "please focus over java method";
+    String NOTIFICATION_FOCUS_CONTENT = "please focus over java method";
+    String NOTIFICATION_PUBLIC_METHOD_CONTENT = "this is not a public method";
     String TAG_PREFIX = "service";
     String TAG_TEXT_OPEN_PAREN = "(";
     String TAG_TEXT_CLOSE_PAREN = ")";

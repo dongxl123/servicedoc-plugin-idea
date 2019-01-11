@@ -9,6 +9,7 @@ import com.intellij.psi.javadoc.PsiDocComment;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import com.suiyiwen.plugin.idea.servicedoc.helper.DialogHelper;
+import com.suiyiwen.plugin.idea.servicedoc.utils.PsiTypesUtils;
 
 /**
  * @author dongxuanliang252
@@ -20,6 +21,10 @@ public class ServiceDocActionManger {
         PsiElement psiElement = e.getData(LangDataKeys.PSI_ELEMENT);
         if (psiElement instanceof PsiMethod) {
             PsiMethod psiMethod = (PsiMethod) psiElement;
+            if (!PsiTypesUtils.INSTANCE.isPublicMethod(psiMethod)) {
+                Messages.showWarningDialog(ServiceDocConstant.NOTIFICATION_PUBLIC_METHOD_CONTENT, ServiceDocConstant.NOTIFICATION_TITLE);
+                return;
+            }
             PsiDocComment oldDocComment = null;
             PsiElement firstElement = psiMethod.getFirstChild();
             DialogModel oldDialogModel = null;
@@ -32,7 +37,7 @@ public class ServiceDocActionManger {
             DialogHelper.INSTANCE.writeJavaDoc(mergeDialogModel, psiElement);
 //            DialogHelper.INSTANCE.showGenerateDialog(mergeDialogModel, psiElement);
         } else {
-            Messages.showWarningDialog(ServiceDocConstant.NOTIFICATION_CONTENT, ServiceDocConstant.NOTIFICATION_TITLE);
+            Messages.showWarningDialog(ServiceDocConstant.NOTIFICATION_FOCUS_CONTENT, ServiceDocConstant.NOTIFICATION_TITLE);
         }
     }
 }
