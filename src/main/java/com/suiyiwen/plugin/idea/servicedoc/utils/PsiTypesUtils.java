@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
-import com.intellij.psi.javadoc.PsiDocComment;
 import com.suiyiwen.plugin.idea.servicedoc.bean.javadoc.JavaDocElements;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -33,15 +32,6 @@ public enum PsiTypesUtils {
         boxedTypes.add(CommonClassNames.JAVA_LANG_LONG);
         boxedTypes.add(CommonClassNames.JAVA_LANG_DOUBLE);
         boxedTypes.add(CommonClassNames.JAVA_LANG_FLOAT);
-    }
-
-
-    public boolean isVariable(PsiField psiField) {
-        PsiModifierList psiModifierList = psiField.getModifierList();
-        if (psiModifierList.hasModifierProperty(PsiModifier.PUBLIC) || psiModifierList.hasModifierProperty(PsiModifier.STATIC) || psiModifierList.hasModifierProperty(PsiModifier.FINAL) || psiModifierList.hasModifierProperty(PsiModifier.TRANSIENT)) {
-            return false;
-        }
-        return true;
     }
 
     public boolean isBoxedType(PsiType psiType) {
@@ -104,35 +94,11 @@ public enum PsiTypesUtils {
         return CommonClassNames.JAVA_LANG_OBJECT_SHORT;
     }
 
-    public String getFieldDescription(PsiField psiField) {
-        PsiDocComment psiDocComment = psiField.getDocComment();
-        if (psiDocComment == null) {
-            return null;
-        }
-        PsiElement[] descriptions = psiDocComment.getDescriptionElements();
-        if (ArrayUtils.isEmpty(descriptions)) {
-            return null;
-        }
-        StringBuffer sb = new StringBuffer();
-        for (PsiElement description : descriptions) {
-            sb.append(description.getText());
-        }
-        return StringUtils.remove(sb.toString(), JavaDocElements.NEW_LINE.getPresentation());
-    }
-
     public PsiType createGenericPsiType(PsiType psiType, PsiSubstitutor psiSubstitutor) {
         if (psiType instanceof PsiClassType && MapUtils.isNotEmpty(psiSubstitutor.getSubstitutionMap())) {
             return psiSubstitutor.substitute(psiType);
         }
         return psiType;
-    }
-
-    public boolean isPublicMethod(PsiMethod element) {
-        PsiModifierList psiModifierList = element.getModifierList();
-        if (psiModifierList.hasModifierProperty(PsiModifier.PUBLIC)) {
-            return true;
-        }
-        return false;
     }
 
     public String generateEnumDescription(PsiType psiType) {

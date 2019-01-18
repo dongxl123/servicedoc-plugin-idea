@@ -9,7 +9,7 @@ import com.intellij.psi.javadoc.PsiDocComment;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import com.suiyiwen.plugin.idea.servicedoc.helper.DialogHelper;
-import com.suiyiwen.plugin.idea.servicedoc.utils.PsiTypesUtils;
+import com.suiyiwen.plugin.idea.servicedoc.utils.PsiMethodUtils;
 
 /**
  * @author dongxuanliang252
@@ -21,8 +21,12 @@ public class ServiceDocActionManger {
         PsiElement psiElement = e.getData(LangDataKeys.PSI_ELEMENT);
         if (psiElement instanceof PsiMethod) {
             PsiMethod psiMethod = (PsiMethod) psiElement;
-            if (!PsiTypesUtils.INSTANCE.isPublicMethod(psiMethod)) {
-                Messages.showWarningDialog(ServiceDocConstant.NOTIFICATION_PUBLIC_METHOD_CONTENT, ServiceDocConstant.NOTIFICATION_TITLE);
+            if (!psiMethod.getContainingClass().isInterface()) {
+                Messages.showWarningDialog(ServiceDocConstant.NOTIFICATION_NOT_INTERFACE_CONTENT, ServiceDocConstant.NOTIFICATION_TITLE);
+                return;
+            }
+            if (!PsiMethodUtils.INSTANCE.isPublicMethod(psiMethod)) {
+                Messages.showWarningDialog(ServiceDocConstant.NOTIFICATION_NOT_PUBLIC_METHOD_CONTENT, ServiceDocConstant.NOTIFICATION_TITLE);
                 return;
             }
             PsiDocComment oldDocComment = null;
