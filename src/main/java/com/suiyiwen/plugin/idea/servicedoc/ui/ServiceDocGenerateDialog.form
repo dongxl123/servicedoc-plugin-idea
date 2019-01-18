@@ -3,7 +3,7 @@
   <grid id="fc535" binding="contentPanel" default-binding="true" layout-manager="GridLayoutManager" row-count="9" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="101" y="25" width="459" height="544"/>
+      <xy x="101" y="25" width="459" height="547"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -108,6 +108,8 @@
         </constraints>
         <properties>
           <columns value="0"/>
+          <lineWrap value="false"/>
+          <margin top="2" left="5" bottom="2" right="5"/>
           <requestFocusEnabled value="true"/>
           <rows value="0"/>
           <tabSize value="3"/>
@@ -137,7 +139,7 @@
           <enabled value="true"/>
           <focusable value="false"/>
           <font style="1"/>
-          <foreground color="-16777216"/>
+          <foreground color="-5921371"/>
         </properties>
         <border type="bevel-raised">
           <font/>

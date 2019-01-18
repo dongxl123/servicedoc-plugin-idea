@@ -35,7 +35,7 @@ public enum PsiFieldUtils {
         for (PsiElement description : descriptions) {
             sb.append(description.getText());
         }
-        return StringUtils.remove(sb.toString(), JavaDocElements.NEW_LINE.getPresentation());
+        return StringUtils.remove(sb.toString().trim(), JavaDocElements.NEW_LINE.getPresentation());
     }
 
 }
