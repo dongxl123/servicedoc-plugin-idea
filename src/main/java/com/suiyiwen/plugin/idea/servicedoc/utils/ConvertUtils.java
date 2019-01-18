@@ -1,14 +1,16 @@
 package com.suiyiwen.plugin.idea.servicedoc.utils;
 
-import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.AbstractExampleBean;
-import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
-import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.ParamBean;
-import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.ResultBean;
+import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.*;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.*;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
+import com.suiyiwen.plugin.idea.servicedoc.ui.tree.FiledTreeTableModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
+import org.jdesktop.swingx.treetable.TreeTableNode;
 
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,4 +151,5 @@ public enum ConvertUtils {
         }
         return tagGroupBean;
     }
+
 }

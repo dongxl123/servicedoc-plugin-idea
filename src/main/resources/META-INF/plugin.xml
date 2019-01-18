@@ -2,15 +2,30 @@
     <id>com.suiyiwen.plugin.idea</id>
     <name>serviceDoc</name>
     <version>1.0</version>
-    <vendor email="dongxl123@163.com" url="http://www.suiyiwen.com">suiyiwen</vendor>
+    <vendor email="dongxl123@163.com" url="http://blog.suiyiwen.com/">suiyiwen</vendor>
 
     <description><![CDATA[
-
-           serviceDoc generation helper
-
+    <h2>serviceDoc generation helper</h2>
+    <ul>
+      <li>This is a plugin you can generate serviceDoc from public method.</li>
+      <li>Please do aware <strong>This plugin is only for IntelliJ IDEA</strong>.</li>
+      <li>This plugin develop for the npm model <code>servicedoc</code>, <a href="https://www.npmjs.com/package/servicedoc">HomePage</a>, install command <code>npm i servicedoc</code></li>
+    </ul>
     ]]></description>
 
     <change-notes><![CDATA[
+    <h2>v1.1</h2>
+    <ul>
+      <li>Support UI operation</li>
+      <li>Only Support for interface class</li>
+    </ul>
+    <h2>v1.0</h2>
+    <ul>
+      <li>Support for public method</li>
+      <li>Supports shortcut to open ServiceDoc, default option + ctrl + shift + o (mac), alt + ctrl + shift + o(win)</li>
+      <li>Support to generate servicedoc</li>
+      <li>Support to modify the doc with memory feature</li>
+    </ul>
     ]]>
     </change-notes>
 

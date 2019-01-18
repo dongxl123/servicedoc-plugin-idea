@@ -4,6 +4,7 @@ import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.PsiClassReferenceType;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.suiyiwen.plugin.idea.servicedoc.bean.javadoc.JavaDocElements;
 import org.apache.commons.collections.MapUtils;
@@ -134,4 +135,17 @@ public enum PsiTypesUtils {
         return false;
     }
 
+    public String generateEnumDescription(PsiType psiType) {
+        if (isEnum(psiType)) {
+            StringBuilder sb = new StringBuilder();
+            PsiClass psiClass = ((PsiClassReferenceType) psiType).resolve();
+            for (PsiField psiField : psiClass.getFields()) {
+                if (psiField instanceof PsiEnumConstant) {
+                    sb.append(psiField.getText()).append(JavaDocElements.NEW_LINE.getPresentation());
+                }
+            }
+            return sb.toString();
+        }
+        return null;
+    }
 }

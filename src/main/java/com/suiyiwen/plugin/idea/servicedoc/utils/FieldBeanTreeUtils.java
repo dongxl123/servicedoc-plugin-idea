@@ -143,9 +143,23 @@ public enum FieldBeanTreeUtils {
                     newField.setDescription(oldField.getDescription());
                 }
                 newField.setChildFieldList(merge(newField.getChildFieldList(), oldField.getChildFieldList()));
+            } else {
+                setFieldBeanCheckFlagRecursively(newField, false);
             }
         }
         return newFieldList;
+    }
+
+    public void setFieldBeanCheckFlagRecursively(FieldBean fieldBean, boolean checked) {
+        if (fieldBean == null) {
+            return;
+        }
+        fieldBean.setChecked(checked);
+        if (CollectionUtils.isNotEmpty(fieldBean.getChildFieldList())) {
+            for (FieldBean childFieldBean : fieldBean.getChildFieldList()) {
+                setFieldBeanCheckFlagRecursively(childFieldBean, checked);
+            }
+        }
     }
 
 }

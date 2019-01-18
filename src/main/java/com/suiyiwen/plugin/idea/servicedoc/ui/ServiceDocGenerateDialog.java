@@ -1,15 +1,17 @@
 package com.suiyiwen.plugin.idea.servicedoc.ui;
 
-import com.alibaba.fastjson.JSON;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.psi.PsiElement;
+import com.intellij.ui.components.JBScrollPane;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.ParamBean;
 import com.suiyiwen.plugin.idea.servicedoc.component.ServiceDocSettings;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import com.suiyiwen.plugin.idea.servicedoc.helper.DialogHelper;
+import com.suiyiwen.plugin.idea.servicedoc.utils.TreeTableUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jdesktop.swingx.JXTreeTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,20 +29,16 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
     private JFormattedTextField authorTextField;
     private JTextArea description;
     private JTabbedPane paramTabbedPanel;
-    private JTable resultTable;
-    private DialogModel initModel;
-    private JButton testButton;
+    private JBScrollPane resultPanel;
+    private DialogModel model;
     private PsiElement psiElement;
 
     public ServiceDocGenerateDialog(boolean canBeParent, @NotNull DialogModel initModel, @NotNull PsiElement psiElement) {
         super(canBeParent);
-        this.initModel = initModel;
+        this.model = initModel;
         this.psiElement = psiElement;
         init();
         setTitle(ServiceDocConstant.TITLE_GENERATE_DIALOG);
-        testButton.addActionListener(e -> {
-            System.out.println(JSON.toJSONString(getCurrentModel()));
-        });
     }
 
     @Nullable
@@ -80,46 +78,39 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
     }
 
     private void generateComment() {
-        DialogHelper.INSTANCE.writeJavaDoc(this.initModel, psiElement);
+        DialogHelper.INSTANCE.writeJavaDoc(getCurrentModel(), psiElement);
     }
 
     /**
      * 初始化数据
      */
     private void refreshWithInitModel() {
-        renderModel(this.initModel);
+        renderModel(this.model);
     }
 
     private DialogModel getCurrentModel() {
-        DialogModel currentModel = new DialogModel();
         if (StringUtils.isNotBlank(serviceTitleTextFiled.getText())) {
-            currentModel.setServiceTitle(serviceTitleTextFiled.getText());
+            model.setServiceTitle(serviceTitleTextFiled.getText());
         }
         if (StringUtils.isNotBlank(serviceFunctionTextField.getText())) {
-            currentModel.setServiceFunction(serviceFunctionTextField.getText());
+            model.setServiceFunction(serviceFunctionTextField.getText());
         }
         if (StringUtils.isNotBlank(groupNameTextField.getText())) {
-            currentModel.setGroupName(groupNameTextField.getText());
+            model.setGroupName(groupNameTextField.getText());
         }
         if (StringUtils.isNotBlank(nameTextField.getText())) {
-            currentModel.setName(nameTextField.getText());
+            model.setName(nameTextField.getText());
         }
         if (StringUtils.isNotBlank(versionTextField.getText())) {
-            currentModel.setVersion(versionTextField.getText());
+            model.setVersion(versionTextField.getText());
         }
         if (StringUtils.isNotBlank(authorTextField.getText())) {
-            currentModel.setAuthor(authorTextField.getText());
+            model.setAuthor(authorTextField.getText());
         }
         if (StringUtils.isNotBlank(description.getText())) {
-            currentModel.setDescription(description.getText());
+            model.setDescription(description.getText());
         }
-        //        if (CollectionUtils.isNotEmpty(model.getParamList())) {
-//            serviceFunctionTextField.setText(model.getParamList());
-//        }
-//        if (model.getResult() != null) {
-//            serviceFunctionTextField.setText(model.getServiceFunction());
-//        }
-        return currentModel;
+        return model;
     }
 
     private void renderModel(DialogModel model) {
@@ -149,14 +140,15 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
         }
         if (CollectionUtils.isNotEmpty(model.getParamList())) {
             for (ParamBean paramBean : model.getParamList()) {
-                JTextArea textArea = new JTextArea(JSON.toJSONString(paramBean));
-                paramTabbedPanel.addTab(paramBean.getTitle(), textArea);
+                JXTreeTable treeTable = TreeTableUtils.INSTANCE.createTreeTable(paramBean);
+                JBScrollPane jbScrollPane = new JBScrollPane();
+                jbScrollPane.setViewportView(treeTable);
+                paramTabbedPanel.addTab(paramBean.getTitle(), jbScrollPane);
             }
         }
         if (model.getResult() != null) {
-            JTextArea textArea = new JTextArea(JSON.toJSONString(model.getResult()));
-            resultTable.setToolTipText(JSON.toJSONString(model.getResult()));
-            resultTable.add(textArea);
+            JXTreeTable treeTable = TreeTableUtils.INSTANCE.createTreeTable(model.getResult());
+            resultPanel.setViewportView(treeTable);
         }
     }
 }

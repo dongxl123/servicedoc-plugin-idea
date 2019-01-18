@@ -19,7 +19,7 @@ import java.util.List;
  * @author dongxuanliang252
  * @date 2019-01-02 13:47
  */
-public enum DialogModelParseUtils {
+public enum NewDialogModelParseUtils {
 
     INSTANCE;
 
@@ -49,7 +49,7 @@ public enum DialogModelParseUtils {
             return null;
         }
         exampleBean.setTitle(title);
-        exampleBean.setFieldList(parseRefFieldBeanList(element, ServiceDocConstant.OBJECT_RESOLVE_DEPTH_START));
+        exampleBean.setFieldList(parseRefFieldBeanList(element));
         List<FieldBean> fieldBeanList = exampleBean.getFieldList();
         if (CollectionUtils.isNotEmpty(fieldBeanList) && fieldBeanList.size() == 1) {
             FieldBean firstFieldBean = fieldBeanList.get(0);
@@ -58,6 +58,10 @@ public enum DialogModelParseUtils {
             }
         }
         return exampleBean;
+    }
+
+    private List<FieldBean> parseRefFieldBeanList(PsiType psiType) {
+        return parseRefFieldBeanList(psiType, ServiceDocConstant.OBJECT_RESOLVE_DEPTH_START);
     }
 
     private List<FieldBean> parseRefFieldBeanList(PsiType psiType, int depth) {
@@ -91,6 +95,9 @@ public enum DialogModelParseUtils {
             List<FieldBean> retChildFieldList = new ArrayList<>();
             FieldBean fieldBean = new FieldBean();
             fieldBean.setType(PsiTypesUtils.INSTANCE.getPresentableText(psiType));
+            if (PsiTypesUtils.INSTANCE.isEnum(psiType)) {
+                fieldBean.setDescription(PsiTypesUtils.INSTANCE.generateEnumDescription(psiType));
+            }
             if (CollectionUtils.isNotEmpty(innerChildFieldList)) {
                 fieldBean.setChildFieldList(innerChildFieldList);
             }
@@ -111,6 +118,9 @@ public enum DialogModelParseUtils {
         }
         fieldBean.setType(PsiTypesUtils.INSTANCE.getPresentableText(psiType));
         fieldBean.setDescription(PsiTypesUtils.INSTANCE.getFieldDescription(psiField));
+        if (StringUtils.isBlank(fieldBean.getDescription()) && PsiTypesUtils.INSTANCE.isEnum(psiType)) {
+            fieldBean.setDescription(PsiTypesUtils.INSTANCE.generateEnumDescription(psiType));
+        }
         if (depth >= ServiceDocConstant.OBJECT_RESOLVE_MAX_DEPTH) {
             return fieldBean;
         }

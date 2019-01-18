@@ -6,6 +6,8 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.AbstractExampleBean;
 import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
+import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.FieldBean;
+import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.ParamBean;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.ServiceDocCommentBean;
 import com.suiyiwen.plugin.idea.servicedoc.component.ServiceDocSettings;
 import com.suiyiwen.plugin.idea.servicedoc.component.operation.JavaDocWriter;
@@ -15,6 +17,7 @@ import com.suiyiwen.plugin.idea.servicedoc.utils.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,9 +43,39 @@ public enum DialogHelper {
         return ConvertUtils.INSTANCE.convertCommentBean2DialogModel(commentBean);
     }
 
+
     public void writeJavaDoc(DialogModel model, PsiElement psiElement) {
+        filterDialogModel(model);
         PsiDocComment javaDoc = PsiDocCommentUtils.INSTANCE.createPsiDocComment(buildCommentText(model));
         writer.write(javaDoc, psiElement);
+    }
+
+    private void filterDialogModel(DialogModel model) {
+        if (model == null) {
+            return;
+        }
+        if (CollectionUtils.isNotEmpty(model.getParamList())) {
+            for (ParamBean paramBean : model.getParamList()) {
+                filterDialogModelFieldBeanRecursively(paramBean.getFieldList());
+            }
+        }
+        if (model.getResult() != null) {
+            filterDialogModelFieldBeanRecursively(model.getResult().getFieldList());
+        }
+    }
+
+    private void filterDialogModelFieldBeanRecursively(List<FieldBean> fieldBeanList) {
+        if (CollectionUtils.isEmpty(fieldBeanList)) {
+            return;
+        }
+        Iterator<FieldBean> itr = fieldBeanList.iterator();
+        while (itr.hasNext()) {
+            FieldBean fieldBean = itr.next();
+            if (!fieldBean.isChecked()) {
+                itr.remove();
+            }
+            filterDialogModelFieldBeanRecursively(fieldBean.getChildFieldList());
+        }
     }
 
     private String buildCommentText(DialogModel model) {
@@ -55,17 +88,17 @@ public enum DialogHelper {
             return null;
         }
         DialogModel dialogModel = new DialogModel();
-        dialogModel.setParamList(DialogModelParseUtils.INSTANCE.parseParamBeanList(element));
-        dialogModel.setResult(DialogModelParseUtils.INSTANCE.parseResultBean(element));
+        dialogModel.setParamList(NewDialogModelParseUtils.INSTANCE.parseParamBeanList(element));
+        dialogModel.setResult(NewDialogModelParseUtils.INSTANCE.parseResultBean(element));
         dialogModel.setVersion(ServiceDocConstant.DEFAULT_VERSION);
-        dialogModel.setServiceTitle(DialogModelParseUtils.INSTANCE.parseServiceTitle(element));
-        dialogModel.setServiceFunction(DialogModelParseUtils.INSTANCE.parseServiceFunction(element));
+        dialogModel.setServiceTitle(NewDialogModelParseUtils.INSTANCE.parseServiceTitle(element));
+        dialogModel.setServiceFunction(NewDialogModelParseUtils.INSTANCE.parseServiceFunction(element));
         ServiceDocSettings settings = ServiceDocSettings.getInstance();
         if (settings != null) {
             dialogModel.setAuthor(settings.getAuthor());
         }
         dialogModel.setGroupName(dialogModel.getServiceTitle());
-        dialogModel.setName(DialogModelParseUtils.INSTANCE.parseServiceName(element));
+        dialogModel.setName(NewDialogModelParseUtils.INSTANCE.parseServiceName(element));
         return dialogModel;
     }
 
