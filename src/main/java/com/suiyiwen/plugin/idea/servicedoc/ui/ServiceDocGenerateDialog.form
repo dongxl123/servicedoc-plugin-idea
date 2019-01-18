@@ -137,7 +137,7 @@
           <enabled value="true"/>
           <focusable value="false"/>
           <font style="1"/>
-          <foreground color="-1"/>
+          <foreground color="-16777216"/>
         </properties>
         <border type="bevel-raised">
           <font/>
