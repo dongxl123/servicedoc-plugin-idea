@@ -130,10 +130,7 @@
       </component>
       <tabbedpane id="4ebc4" binding="paramTabbedPanel" default-binding="true">
         <constraints>
-          <grid row="7" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <minimum-size width="-1" height="100"/>
-            <preferred-size width="200" height="150"/>
-          </grid>
+          <grid row="7" column="1" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <enabled value="true"/>
@@ -176,10 +173,7 @@
       </component>
       <component id="a8b4f" class="com.intellij.ui.components.JBScrollPane" binding="resultPanel" default-binding="true">
         <constraints>
-          <grid row="8" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <minimum-size width="-1" height="100"/>
-            <preferred-size width="150" height="150"/>
-          </grid>
+          <grid row="8" column="1" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <foreground color="-1"/>

@@ -8,6 +8,7 @@ import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.ParamBean;
 import com.suiyiwen.plugin.idea.servicedoc.component.ServiceDocSettings;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import com.suiyiwen.plugin.idea.servicedoc.helper.DialogHelper;
+import com.suiyiwen.plugin.idea.servicedoc.utils.FieldBeanTreeUtils;
 import com.suiyiwen.plugin.idea.servicedoc.utils.TreeTableUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 
 
 public class ServiceDocGenerateDialog extends DialogWrapper {
@@ -138,17 +140,28 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
         if (StringUtils.isNotBlank(model.getDescription())) {
             description.setText(model.getDescription());
         }
+        int paramMaxLines = 0;
         if (CollectionUtils.isNotEmpty(model.getParamList())) {
             for (ParamBean paramBean : model.getParamList()) {
                 JXTreeTable treeTable = TreeTableUtils.INSTANCE.createTreeTable(paramBean);
                 JBScrollPane jbScrollPane = new JBScrollPane();
                 jbScrollPane.setViewportView(treeTable);
                 paramTabbedPanel.addTab(paramBean.getTitle(), jbScrollPane);
+                int count = FieldBeanTreeUtils.INSTANCE.getLines(paramBean.getFieldList());
+                paramMaxLines = Math.max(count, paramMaxLines);
             }
         }
+        paramTabbedPanel.setMinimumSize(new Dimension(-1, Math.max(paramMaxLines * ServiceDocConstant.UI_LINE_MIN_SIZE, ServiceDocConstant.UI_MIN_SIZE + ServiceDocConstant.UI_TITLE_SIZE)));
+        paramTabbedPanel.setMaximumSize(new Dimension(-1, Math.min(paramMaxLines * ServiceDocConstant.UI_LINE_MAX_SIZE, ServiceDocConstant.UI_MAX_SIZE + ServiceDocConstant.UI_TITLE_SIZE)));
+        paramTabbedPanel.setPreferredSize(new Dimension(-1, Math.max(paramMaxLines * ServiceDocConstant.UI_LINE_PREFER_SIZE, ServiceDocConstant.UI_MIN_SIZE + ServiceDocConstant.UI_TITLE_SIZE)));
+        int resultLines = 0;
         if (model.getResult() != null) {
             JXTreeTable treeTable = TreeTableUtils.INSTANCE.createTreeTable(model.getResult());
             resultPanel.setViewportView(treeTable);
+            resultLines = FieldBeanTreeUtils.INSTANCE.getLines(model.getResult().getFieldList());
         }
+        resultPanel.setMinimumSize(new Dimension(-1, Math.max(resultLines * ServiceDocConstant.UI_LINE_MIN_SIZE, ServiceDocConstant.UI_MIN_SIZE)));
+        resultPanel.setMaximumSize(new Dimension(-1, Math.min(resultLines * ServiceDocConstant.UI_LINE_MAX_SIZE, ServiceDocConstant.UI_MAX_SIZE)));
+        resultPanel.setPreferredSize(new Dimension(-1, Math.max(resultLines * ServiceDocConstant.UI_LINE_PREFER_SIZE, ServiceDocConstant.UI_MIN_SIZE)));
     }
 }

@@ -20,6 +20,10 @@ ServiceDoc
 Default **Option + Ctrl + Shift + o**(Mac), **Alt + Ctrl + Shift + o** (win)
 
 ## Version Info
+v1.2
+> 
+* Optimizing UI Interface 
+* bugFix: field description should support special char `space`
 
 v1.1
 > 

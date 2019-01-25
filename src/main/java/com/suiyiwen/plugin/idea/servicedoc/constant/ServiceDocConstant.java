@@ -23,4 +23,10 @@ public interface ServiceDocConstant {
     String TAG_TEXT_DEFAULT_TITLE_RESULT_GROUP = "result";
     int OBJECT_RESOLVE_MAX_DEPTH = 4;
     int OBJECT_RESOLVE_DEPTH_START = 1;
+    int UI_LINE_MIN_SIZE = 15;
+    int UI_LINE_PREFER_SIZE = 20;
+    int UI_LINE_MAX_SIZE = 25;
+    int UI_TITLE_SIZE = 30;
+    int UI_MIN_SIZE = 50;
+    int UI_MAX_SIZE = 400;
 }
