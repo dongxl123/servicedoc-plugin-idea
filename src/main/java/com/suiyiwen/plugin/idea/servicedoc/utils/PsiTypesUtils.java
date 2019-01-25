@@ -7,7 +7,6 @@ import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
 import com.suiyiwen.plugin.idea.servicedoc.bean.javadoc.JavaDocElements;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -76,15 +75,6 @@ public enum PsiTypesUtils {
         }
         return false;
     }
-
-    public boolean hasGenericTypes(PsiType psiType) {
-        if (psiType instanceof PsiClassType) {
-            PsiType[] genericPsiTypes = ((PsiClassType) psiType).getParameters();
-            return ArrayUtils.isNotEmpty(genericPsiTypes);
-        }
-        return false;
-    }
-
 
     public String getPresentableText(PsiType psiType) {
         String presentableText = psiType.getPresentableText();
