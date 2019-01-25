@@ -151,17 +151,17 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
                 paramMaxLines = Math.max(count, paramMaxLines);
             }
         }
-        paramTabbedPanel.setMinimumSize(new Dimension(-1, Math.max(paramMaxLines * ServiceDocConstant.UI_LINE_MIN_SIZE, ServiceDocConstant.UI_MIN_SIZE + ServiceDocConstant.UI_TITLE_SIZE)));
+        paramTabbedPanel.setMinimumSize(new Dimension(-1, Math.min(Math.max(paramMaxLines * ServiceDocConstant.UI_LINE_MIN_SIZE, ServiceDocConstant.UI_MIN_SIZE + ServiceDocConstant.UI_TITLE_SIZE), ServiceDocConstant.UI_MAX_SIZE)));
         paramTabbedPanel.setMaximumSize(new Dimension(-1, Math.min(paramMaxLines * ServiceDocConstant.UI_LINE_MAX_SIZE, ServiceDocConstant.UI_MAX_SIZE + ServiceDocConstant.UI_TITLE_SIZE)));
-        paramTabbedPanel.setPreferredSize(new Dimension(-1, Math.max(paramMaxLines * ServiceDocConstant.UI_LINE_PREFER_SIZE, ServiceDocConstant.UI_MIN_SIZE + ServiceDocConstant.UI_TITLE_SIZE)));
+        paramTabbedPanel.setPreferredSize(new Dimension(-1, Math.min(paramMaxLines * ServiceDocConstant.UI_LINE_PREFER_SIZE, ServiceDocConstant.UI_MAX_SIZE + ServiceDocConstant.UI_TITLE_SIZE)));
         int resultLines = 0;
         if (model.getResult() != null) {
             JXTreeTable treeTable = TreeTableUtils.INSTANCE.createTreeTable(model.getResult());
             resultPanel.setViewportView(treeTable);
             resultLines = FieldBeanTreeUtils.INSTANCE.getLines(model.getResult().getFieldList());
         }
-        resultPanel.setMinimumSize(new Dimension(-1, Math.max(resultLines * ServiceDocConstant.UI_LINE_MIN_SIZE, ServiceDocConstant.UI_MIN_SIZE)));
+        resultPanel.setMinimumSize(new Dimension(-1, Math.min(Math.max(resultLines * ServiceDocConstant.UI_LINE_MIN_SIZE, ServiceDocConstant.UI_MIN_SIZE), ServiceDocConstant.UI_MAX_SIZE)));
         resultPanel.setMaximumSize(new Dimension(-1, Math.min(resultLines * ServiceDocConstant.UI_LINE_MAX_SIZE, ServiceDocConstant.UI_MAX_SIZE)));
-        resultPanel.setPreferredSize(new Dimension(-1, Math.max(resultLines * ServiceDocConstant.UI_LINE_PREFER_SIZE, ServiceDocConstant.UI_MIN_SIZE)));
+        resultPanel.setPreferredSize(new Dimension(-1, Math.min(resultLines * ServiceDocConstant.UI_LINE_PREFER_SIZE, ServiceDocConstant.UI_MAX_SIZE)));
     }
 }
