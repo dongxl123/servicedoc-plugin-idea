@@ -64,6 +64,5 @@ public class CheckTreeTableManager extends MouseAdapter implements TreeSelection
 
     @Override
     public void valueChanged(TreeSelectionEvent e) {
-        System.out.println("valueChanged, " + e.getPath());
     }
 }

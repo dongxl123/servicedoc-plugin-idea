@@ -41,6 +41,7 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
         this.psiElement = psiElement;
         init();
         setTitle(ServiceDocConstant.TITLE_GENERATE_DIALOG);
+        setSize(800,800);
     }
 
     @Nullable
