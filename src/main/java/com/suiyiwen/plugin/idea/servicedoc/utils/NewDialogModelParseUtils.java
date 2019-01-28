@@ -51,6 +51,7 @@ public enum NewDialogModelParseUtils {
         exampleBean.setTitle(title);
         exampleBean.setFieldList(parseRefFieldBeanList(element));
         List<FieldBean> fieldBeanList = exampleBean.getFieldList();
+        //对第一个根节点fieldBean作特殊处理, size always equals one
         if (CollectionUtils.isNotEmpty(fieldBeanList) && fieldBeanList.size() == 1) {
             FieldBean firstFieldBean = fieldBeanList.get(0);
             if (StringUtils.isEmpty(firstFieldBean.getName())) {
@@ -70,7 +71,7 @@ public enum NewDialogModelParseUtils {
             depth++;
         }
         List<FieldBean> innerChildFieldList = new ArrayList<>();
-        //boxedType, String, enum, map, primitiveType
+        //boxedType, String, enum, map, primitiveType,number,Character,CharSequence,Boolean,Date
         if (PsiTypesUtils.INSTANCE.isExtractEndPsiType(psiType)) {
             //不处理
         } else if (PsiTypesUtils.INSTANCE.isIterable(psiType)) {

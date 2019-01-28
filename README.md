@@ -20,6 +20,12 @@ ServiceDoc
 Default **Option + Ctrl + Shift + o**(Mac), **Alt + Ctrl + Shift + o** (win)
 
 ## Version Info
+
+v1.3
+> 
+* bugFix: field support special psiType, eg. BigInteger...
+* bugFix: remove Deprecated field 
+
 v1.2
 > 
 * Optimizing UI Interface 
