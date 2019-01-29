@@ -23,7 +23,7 @@ Default **Option + Ctrl + Shift + o**(Mac), **Alt + Ctrl + Shift + o** (win)
 
 v1.4
 > 
-* Support IDEA earlier version since 2016.2.5
+* Support IDEA earlier version since 162+
 
 v1.3
 > 

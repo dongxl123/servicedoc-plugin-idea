@@ -16,7 +16,7 @@
     <change-notes><![CDATA[
     <h2>v1.4</h2>
     <ul>
-      <li>Support IDEA earlier version since 2016.2.5</li>
+      <li>Support IDEA earlier version since 162+</li>
     </ul>
     <h2>v1.3</h2>
     <ul>
@@ -44,7 +44,7 @@
     </change-notes>
 
     <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for text -->
-    <idea-version since-build="143.2370.31"/>
+    <idea-version since-build="162.0"/>
 
     <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->
