@@ -38,4 +38,5 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.45'
     compileOnly 'org.projectlombok:lombok:1.16.18'
     testCompile 'junit:junit:4.12'
+    compile 'commons-collections:commons-collections:3.2.2'
 }
