@@ -21,6 +21,10 @@ Default **Option + Ctrl + Shift + o**(Mac), **Alt + Ctrl + Shift + o** (win)
 
 ## Version Info
 
+v1.4
+> 
+* Support IDEA earlier version since 2016.2.5
+
 v1.3
 > 
 * bugFix: field support special psiType, eg. BigInteger...

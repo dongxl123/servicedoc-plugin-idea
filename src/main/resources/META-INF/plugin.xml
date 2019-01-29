@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.suiyiwen.plugin.idea</id>
     <name>serviceDoc</name>
-    <version>1.0</version>
+    <version>1.4</version>
     <vendor email="dongxl123@163.com" url="http://blog.suiyiwen.com/">suiyiwen</vendor>
 
     <description><![CDATA[
@@ -14,6 +14,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <h2>v1.4</h2>
+    <ul>
+      <li>Support IDEA earlier version since 2016.2.5</li>
+    </ul>
     <h2>v1.3</h2>
     <ul>
       <li>bugFix: field support special psiType, eg. BigInteger...</li>
