@@ -21,8 +21,8 @@ public interface ServiceDocConstant {
     String CHAR_DOT = ".";
     String CHAR_COMMA = ",";
     String TAG_TEXT_DEFAULT_TITLE_RESULT_GROUP = "result";
-    int OBJECT_RESOLVE_MAX_DEPTH = 4;
-    int OBJECT_RESOLVE_DEPTH_START = 1;
+    int OBJECT_RESOLVE_MAX_DEPTH = 3;
+    int OBJECT_RESOLVE_DEPTH_START = 0;
     int UI_LINE_MIN_SIZE = 10;
     int UI_LINE_PREFER_SIZE = 20;
     int UI_LINE_MAX_SIZE = 25;

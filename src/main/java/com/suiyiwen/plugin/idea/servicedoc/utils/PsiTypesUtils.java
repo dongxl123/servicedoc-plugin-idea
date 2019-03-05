@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
-import com.suiyiwen.plugin.idea.servicedoc.bean.javadoc.JavaDocElements;
+import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -127,10 +127,10 @@ public enum PsiTypesUtils {
                     if (next != null) {
                         sb.append(next.getText().trim());
                     }
-                    sb.append(JavaDocElements.NEW_LINE.getPresentation());
+                    sb.append(ServiceDocConstant.CHAR_COMMA);
                 }
             }
-            return sb.toString();
+            return StringUtils.stripEnd(sb.toString(), ServiceDocConstant.CHAR_COMMA);
         }
         return null;
     }
