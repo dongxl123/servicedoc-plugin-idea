@@ -20,6 +20,9 @@ ServiceDoc
 Default **Option + Ctrl + Shift + o**(Mac), **Alt + Ctrl + Shift + o** (win)
 
 ## Version Info
+v1.5
+> 
+* Resolve conflict: JavaDocWriter component name collision
 
 v1.4
 > 

@@ -33,7 +33,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
     /**
      * The constant COMPONENT_NAME.
      */
-    public static final String COMPONENT_NAME = "JavaDocWriter";
+    public static final String COMPONENT_NAME = "ServiceDocJavaDocWriter";
 
     private static final Logger LOGGER = Logger.getInstance(JavaDocWriterImpl.class);
 
