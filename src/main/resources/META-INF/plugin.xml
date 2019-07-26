@@ -1,7 +1,6 @@
 <idea-plugin>
     <id>com.suiyiwen.plugin.idea.servicedoc</id>
     <name>serviceDoc</name>
-    <version>1.4</version>
     <vendor email="dongxl123@163.com" url="http://blog.suiyiwen.com/">suiyiwen</vendor>
 
     <description><![CDATA[
@@ -14,6 +13,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <h2>v2.0</h2>
+    <ul>
+      <li>Support IDEA earlier version since 192+</li>
+    </ul>
     <h2>v1.4</h2>
     <ul>
       <li>Support IDEA earlier version since 162+</li>
@@ -44,7 +47,7 @@
     </change-notes>
 
     <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for text -->
-    <idea-version since-build="162"/>
+    <idea-version since-build="192"/>
 
     <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->
