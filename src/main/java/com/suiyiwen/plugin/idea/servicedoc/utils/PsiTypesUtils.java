@@ -19,7 +19,7 @@ import java.util.List;
 public enum PsiTypesUtils {
 
     INSTANCE;
-    
+
     private final String JAVA_LANG_CHAR_SEQUENCE = "java.lang.CharSequence";
 
     private static final List<String> boxedTypes = new ArrayList<>();
@@ -85,13 +85,13 @@ public enum PsiTypesUtils {
     }
 
     public PsiType createPsiType(String fQClassName) {
-        Project project = CommonDataKeys.PROJECT.getData(DataManager.getInstance().getDataContext());
+        Project project = CommonDataKeys.PROJECT.getData(DataManager.getInstance().getDataContextFromFocus().getResultSync());
         return JavaPsiFacade.getElementFactory(project).createTypeByFQClassName(fQClassName);
     }
 
     public boolean isExtractEndPsiType(PsiType psiType) {
         if (psiType instanceof PsiClassType) {
-            if (isBoxedType(psiType) || isString(psiType) || isMap(psiType) || isEnum(psiType) || isNumber(psiType) 
+            if (isBoxedType(psiType) || isString(psiType) || isMap(psiType) || isEnum(psiType) || isNumber(psiType)
                     || isCharacter(psiType) || isCharSequence(psiType) || isBoolean(psiType) || isDate(psiType)) {
                 return true;
             }

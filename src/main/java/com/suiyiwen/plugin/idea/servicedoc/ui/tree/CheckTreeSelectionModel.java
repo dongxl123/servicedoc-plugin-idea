@@ -4,11 +4,12 @@
  */
 package com.suiyiwen.plugin.idea.servicedoc.ui.tree;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 
 import javax.swing.tree.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 /**
  * @author Santhosh Kumar T - santhosh@in.fiorano.com

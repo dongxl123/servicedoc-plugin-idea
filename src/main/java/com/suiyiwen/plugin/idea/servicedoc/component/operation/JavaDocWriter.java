@@ -19,7 +19,7 @@ public interface JavaDocWriter extends ApplicationComponent {
     /**
      * The constant WRITE_JAVADOC_COMMAND_GROUP.
      */
-    String WRITE_JAVADOC_COMMAND_GROUP = "com.github.setial.operation";
+    String WRITE_JAVADOC_COMMAND_GROUP = "com.suiyiwen.plugin.idea.servicedoc.component.operation";
 
     /**
      * Write java doc.
