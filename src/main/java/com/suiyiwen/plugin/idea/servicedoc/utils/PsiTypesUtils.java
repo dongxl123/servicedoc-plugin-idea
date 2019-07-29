@@ -2,6 +2,7 @@ package com.suiyiwen.plugin.idea.servicedoc.utils;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
@@ -85,7 +86,13 @@ public enum PsiTypesUtils {
     }
 
     public PsiType createPsiType(String fQClassName) {
-        Project project = CommonDataKeys.PROJECT.getData(DataManager.getInstance().getDataContextFromFocus().getResultSync());
+        DataContext dataContext = null;
+        try {
+            dataContext = DataManager.getInstance().getDataContextFromFocusAsync().blockingGet(ServiceDocConstant.DATA_CONTEXT_BLOCKING_TIMEOUT);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Project project = CommonDataKeys.PROJECT.getData(dataContext);
         return JavaPsiFacade.getElementFactory(project).createTypeByFQClassName(fQClassName);
     }
 
