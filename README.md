@@ -24,6 +24,10 @@ v2.0
 > 
 * Support IDEA earlier version since 192+
 
+v1.5
+> 
+* Resolve conflict: JavaDocWriter component name collision
+
 v1.4
 > 
 * Support IDEA earlier version since 162+
