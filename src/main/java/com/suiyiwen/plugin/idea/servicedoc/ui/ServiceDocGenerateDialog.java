@@ -11,6 +11,7 @@ import com.suiyiwen.plugin.idea.servicedoc.helper.DialogHelper;
 import com.suiyiwen.plugin.idea.servicedoc.utils.FieldBeanTreeUtils;
 import com.suiyiwen.plugin.idea.servicedoc.utils.TreeTableUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,9 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
     private JTextArea description;
     private JTabbedPane paramTabbedPanel;
     private JBScrollPane resultPanel;
+    private JRadioButton yesRadioButton;
+    private JRadioButton noRadioButton;
+    private JRadioButton yesReRadioButton;
     private DialogModel model;
     private PsiElement psiElement;
 
@@ -113,6 +117,13 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
         }
         if (StringUtils.isNotBlank(description.getText())) {
             model.setDescription(description.getText());
+        }
+        if (BooleanUtils.isTrue(yesRadioButton.isSelected())) {
+            model.setGenerateExampleType(1);
+        } else if(BooleanUtils.isTrue(yesReRadioButton.isSelected())){
+            model.setGenerateExampleType(2);
+        }else {
+            model.setGenerateExampleType(0);
         }
         return model;
     }

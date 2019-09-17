@@ -24,5 +24,8 @@ public class DialogModel implements Serializable {
     private String description;
     private List<ParamBean> paramList;
     private ResultBean result;
-
+    /**
+     * 0:否 , 1:是 , 2:重新生成
+     */
+    private Integer generateExampleType;
 }

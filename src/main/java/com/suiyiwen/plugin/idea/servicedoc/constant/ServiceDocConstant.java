@@ -20,6 +20,8 @@ public interface ServiceDocConstant {
     String TAG_TEXT_CLOSE_BRACE = "}";
     String CHAR_DOT = ".";
     String CHAR_COMMA = ",";
+    String CHAR_AND = "&";
+    String CHAR_EQUAL = "=";
     String TAG_TEXT_DEFAULT_TITLE_RESULT_GROUP = "result";
     int OBJECT_RESOLVE_MAX_DEPTH = 3;
     int OBJECT_RESOLVE_DEPTH_START = 0;

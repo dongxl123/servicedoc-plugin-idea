@@ -90,6 +90,8 @@ public enum NewDialogModelParseUtils {
             List<FieldBean> retChildFieldList = new ArrayList<>();
             FieldBean fieldBean = new FieldBean();
             fieldBean.setType(PsiTypesUtils.INSTANCE.getPresentableText(psiType));
+            fieldBean.setFieldType(PsiTypesUtils.INSTANCE.getFieldType(psiType));
+            fieldBean.setPsiType(psiType);
             if (PsiTypesUtils.INSTANCE.isEnum(psiType)) {
                 fieldBean.setDescription(PsiTypesUtils.INSTANCE.generateEnumDescription(psiType));
             }
@@ -109,6 +111,8 @@ public enum NewDialogModelParseUtils {
         fieldBean.setName(psiField.getName());
         PsiType psiType = PsiTypesUtils.INSTANCE.createGenericPsiType(psiField.getType(), psiSubstitutor);
         fieldBean.setType(PsiTypesUtils.INSTANCE.getPresentableText(psiType));
+        fieldBean.setFieldType(PsiTypesUtils.INSTANCE.getFieldType(psiType));
+        fieldBean.setPsiType(psiType);
         fieldBean.setDescription(PsiFieldUtils.INSTANCE.getFieldDescription(psiField));
         if (StringUtils.isBlank(fieldBean.getDescription()) && PsiTypesUtils.INSTANCE.isEnum(psiType)) {
             fieldBean.setDescription(PsiTypesUtils.INSTANCE.generateEnumDescription(psiType));

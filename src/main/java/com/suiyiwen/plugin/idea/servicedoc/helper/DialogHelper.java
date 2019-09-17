@@ -4,10 +4,7 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.javadoc.PsiDocComment;
-import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.AbstractExampleBean;
-import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.DialogModel;
-import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.FieldBean;
-import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.ParamBean;
+import com.suiyiwen.plugin.idea.servicedoc.bean.dialog.*;
 import com.suiyiwen.plugin.idea.servicedoc.bean.servicedoc.ServiceDocCommentBean;
 import com.suiyiwen.plugin.idea.servicedoc.component.ServiceDocSettings;
 import com.suiyiwen.plugin.idea.servicedoc.component.operation.JavaDocWriter;
@@ -15,6 +12,7 @@ import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import com.suiyiwen.plugin.idea.servicedoc.ui.ServiceDocGenerateDialog;
 import com.suiyiwen.plugin.idea.servicedoc.utils.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Iterator;
@@ -43,24 +41,43 @@ public enum DialogHelper {
         return ConvertUtils.INSTANCE.convertCommentBean2DialogModel(commentBean);
     }
 
-
     public void writeJavaDoc(DialogModel model, PsiElement psiElement) {
-        filterDialogModel(model);
+        processDialogModel(model);
         PsiDocComment javaDoc = PsiDocCommentUtils.INSTANCE.createPsiDocComment(buildCommentText(model));
         writer.write(javaDoc, psiElement);
     }
 
-    private void filterDialogModel(DialogModel model) {
+    private void processDialogModel(DialogModel model) {
         if (model == null) {
             return;
         }
-        if (CollectionUtils.isNotEmpty(model.getParamList())) {
-            for (ParamBean paramBean : model.getParamList()) {
+        List<ParamBean> paramBeanList = model.getParamList();
+        if (CollectionUtils.isNotEmpty(paramBeanList)) {
+            for (ParamBean paramBean : paramBeanList) {
                 filterDialogModelFieldBeanRecursively(paramBean.getFieldList());
+                if (model.getGenerateExampleType().equals(1)) {
+                    if (StringUtils.isBlank(paramBean.getExample())) {
+                        paramBean.setExample(ExampleUtils.INSTANCE.generateExampleString(paramBean.getFieldList()));
+                    }
+                } else if (model.getGenerateExampleType().equals(2)) {
+                    paramBean.setExample(ExampleUtils.INSTANCE.generateExampleString(paramBean.getFieldList()));
+                } else {
+                    paramBean.setExample(null);
+                }
             }
         }
-        if (model.getResult() != null) {
-            filterDialogModelFieldBeanRecursively(model.getResult().getFieldList());
+        ResultBean resultBean = model.getResult();
+        if (resultBean != null) {
+            filterDialogModelFieldBeanRecursively(resultBean.getFieldList());
+            if (model.getGenerateExampleType().equals(1)) {
+                if (StringUtils.isBlank(resultBean.getExample())) {
+                    resultBean.setExample(ExampleUtils.INSTANCE.generateExampleString(resultBean.getFieldList()));
+                }
+            } else if (model.getGenerateExampleType().equals(2)) {
+                resultBean.setExample(ExampleUtils.INSTANCE.generateExampleString(resultBean.getFieldList()));
+            } else {
+                resultBean.setExample(null);
+            }
         }
     }
 
@@ -114,7 +131,7 @@ public enum DialogHelper {
         }
         DialogModel mergeModel = newModel;
         if (StringUtils.isNotBlank(oldModel.getVersion())) {
-            newModel.setVersion(oldModel.getVersion());
+            mergeModel.setVersion(oldModel.getVersion());
         }
         if (StringUtils.isNotBlank(oldModel.getAuthor())) {
             mergeModel.setAuthor(oldModel.getAuthor());

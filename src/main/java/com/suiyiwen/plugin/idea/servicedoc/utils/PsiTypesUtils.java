@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
+import com.suiyiwen.plugin.idea.servicedoc.bean.FieldType;
 import com.suiyiwen.plugin.idea.servicedoc.constant.ServiceDocConstant;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -141,4 +142,23 @@ public enum PsiTypesUtils {
         }
         return null;
     }
+
+    public FieldType getFieldType(PsiType psiType) {
+        if (psiType instanceof PsiPrimitiveType) {
+            String boxedTypeName = ((PsiPrimitiveType) psiType).getBoxedTypeName();
+            return getFieldType(PsiTypesUtils.INSTANCE.createPsiType(boxedTypeName));
+        } else if (psiType instanceof PsiArrayType || isIterable(psiType)) {
+            return FieldType.Array;
+        } else if (isBoolean(psiType)) {
+            return FieldType.Boolean;
+        } else if (isNumber(psiType) || isDate(psiType)) {
+            return FieldType.Number;
+        } else if (isCharSequence(psiType) || isCharacter(psiType) || isEnum(psiType)) {
+            return FieldType.String;
+        } else if (isMap(psiType)) {
+            return FieldType.Object;
+        }
+        return FieldType.Object;
+    }
+
 }
