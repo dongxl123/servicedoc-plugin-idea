@@ -87,13 +87,7 @@ public enum PsiTypesUtils {
     }
 
     public PsiType createPsiType(String fQClassName) {
-        DataContext dataContext = null;
-        try {
-            dataContext = DataManager.getInstance().getDataContextFromFocusAsync().blockingGet(ServiceDocConstant.DATA_CONTEXT_BLOCKING_TIMEOUT);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        Project project = CommonDataKeys.PROJECT.getData(dataContext);
+        Project project = CommonDataKeys.PROJECT.getData(DataManager.getInstance().getDataContext());
         return JavaPsiFacade.getElementFactory(project).createTypeByFQClassName(fQClassName);
     }
 

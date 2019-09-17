@@ -20,13 +20,9 @@ ServiceDoc
 Default **Option + Ctrl + Shift + o**(Mac), **Alt + Ctrl + Shift + o** (win)
 
 ## Version Info
-v2.1
+v1.6
 > 
 * add example generate button
-
-v2.0
-> 
-* Support IDEA earlier version since 192+
 
 v1.5
 > 

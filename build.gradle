@@ -9,10 +9,9 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 intellij {
-    plugins 'java'
-    version 'IC-2019.2'
-    //   version 'IC-2016.2.5'
-    //version 'IC-2018.2.1'
+    //version 'IC-2019.2'
+    //  version 'IC-2016.2.5'
+    version 'IC-2018.3.2'
     pluginName 'serviceDoc'
     updateSinceUntilBuild false
 }
@@ -22,7 +21,7 @@ tasks.withType(JavaCompile) {
 }
 
 group 'com.suiyiwen.plugin.idea'
-version '2.1'
+version '1.6'
 
 repositories {
     mavenLocal()
