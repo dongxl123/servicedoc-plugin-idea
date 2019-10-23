@@ -20,13 +20,17 @@ ServiceDoc
 Default **Option + Ctrl + Shift + o**(Mac), **Alt + Ctrl + Shift + o** (win)
 
 ## Version Info
-v1.7
+v2.2
 > 
 * add pluginIcon.svg
 
-v1.6
+v2.1
 > 
 * add example generate button
+
+v2.0
+> 
+* Support IDEA earlier version since 192+
 
 v1.5
 > 

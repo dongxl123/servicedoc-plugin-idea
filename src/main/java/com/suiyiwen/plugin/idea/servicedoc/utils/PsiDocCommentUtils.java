@@ -17,7 +17,13 @@ public enum PsiDocCommentUtils {
     INSTANCE;
 
     public PsiDocComment createPsiDocComment(String commentText) {
-        Project project = CommonDataKeys.PROJECT.getData(DataManager.getInstance().getDataContext());
+        DataContext dataContext = null;
+        try {
+            dataContext = DataManager.getInstance().getDataContextFromFocusAsync().blockingGet(ServiceDocConstant.DATA_CONTEXT_BLOCKING_TIMEOUT);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        Project project = CommonDataKeys.PROJECT.getData(dataContext);
         return JavaPsiFacade.getElementFactory(project).createDocCommentFromText(commentText);
     }
 
