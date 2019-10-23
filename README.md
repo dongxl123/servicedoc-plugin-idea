@@ -20,6 +20,10 @@ ServiceDoc
 Default **Option + Ctrl + Shift + o**(Mac), **Alt + Ctrl + Shift + o** (win)
 
 ## Version Info
+v1.7
+> 
+* add pluginIcon.svg
+
 v1.6
 > 
 * add example generate button
