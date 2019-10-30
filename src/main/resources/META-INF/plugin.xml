@@ -13,6 +13,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <h2>v1.8</h2>
+    <ul>
+      <li>add pluginIcon_dark.svg</li>
+    </ul>
     <h2>v1.7</h2>
     <ul>
       <li>add pluginIcon.svg</li>
