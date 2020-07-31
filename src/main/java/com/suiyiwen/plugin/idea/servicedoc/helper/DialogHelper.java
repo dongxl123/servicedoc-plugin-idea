@@ -14,6 +14,7 @@ import com.suiyiwen.plugin.idea.servicedoc.utils.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.List;
@@ -42,12 +43,12 @@ public enum DialogHelper {
     }
 
     public void writeJavaDoc(DialogModel model, PsiElement psiElement) {
-        processDialogModel(model);
-        PsiDocComment javaDoc = PsiDocCommentUtils.INSTANCE.createPsiDocComment(buildCommentText(model));
+        processDialogModel(model, psiElement);
+        PsiDocComment javaDoc = PsiDocCommentUtils.INSTANCE.createPsiDocComment(buildCommentText(model), psiElement);
         writer.write(javaDoc, psiElement);
     }
 
-    private void processDialogModel(DialogModel model) {
+    private void processDialogModel(DialogModel model, @NotNull PsiElement psiElement) {
         if (model == null) {
             return;
         }
@@ -57,10 +58,10 @@ public enum DialogHelper {
                 filterDialogModelFieldBeanRecursively(paramBean.getFieldList());
                 if (model.getGenerateExampleType().equals(1)) {
                     if (StringUtils.isBlank(paramBean.getExample())) {
-                        paramBean.setExample(ExampleUtils.INSTANCE.generateExampleString(paramBean.getFieldList()));
+                        paramBean.setExample(ExampleUtils.INSTANCE.generateExampleString(paramBean.getFieldList(), psiElement));
                     }
                 } else if (model.getGenerateExampleType().equals(2)) {
-                    paramBean.setExample(ExampleUtils.INSTANCE.generateExampleString(paramBean.getFieldList()));
+                    paramBean.setExample(ExampleUtils.INSTANCE.generateExampleString(paramBean.getFieldList(), psiElement));
                 } else {
                     paramBean.setExample(null);
                 }
@@ -71,10 +72,10 @@ public enum DialogHelper {
             filterDialogModelFieldBeanRecursively(resultBean.getFieldList());
             if (model.getGenerateExampleType().equals(1)) {
                 if (StringUtils.isBlank(resultBean.getExample())) {
-                    resultBean.setExample(ExampleUtils.INSTANCE.generateExampleString(resultBean.getFieldList()));
+                    resultBean.setExample(ExampleUtils.INSTANCE.generateExampleString(resultBean.getFieldList(), psiElement));
                 }
             } else if (model.getGenerateExampleType().equals(2)) {
-                resultBean.setExample(ExampleUtils.INSTANCE.generateExampleString(resultBean.getFieldList()));
+                resultBean.setExample(ExampleUtils.INSTANCE.generateExampleString(resultBean.getFieldList(), psiElement));
             } else {
                 resultBean.setExample(null);
             }
@@ -113,6 +114,7 @@ public enum DialogHelper {
         ServiceDocSettings settings = ServiceDocSettings.getInstance();
         if (settings != null) {
             dialogModel.setAuthor(settings.getAuthor());
+            dialogModel.setVersion(settings.getVersion());
         }
         dialogModel.setGroupName(dialogModel.getServiceTitle());
         dialogModel.setName(NewDialogModelParseUtils.INSTANCE.parseServiceName(element));

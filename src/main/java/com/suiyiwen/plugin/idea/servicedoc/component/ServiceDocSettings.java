@@ -17,6 +17,8 @@ import org.jetbrains.annotations.Nullable;
 )
 public class ServiceDocSettings implements PersistentStateComponent<ServiceDocSettings> {
 
+    private String version;
+
     private String author;
 
     public String getAuthor() {
@@ -25,6 +27,14 @@ public class ServiceDocSettings implements PersistentStateComponent<ServiceDocSe
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     public static ServiceDocSettings getInstance() {
@@ -39,6 +49,8 @@ public class ServiceDocSettings implements PersistentStateComponent<ServiceDocSe
 
     @Override
     public void loadState(@NotNull ServiceDocSettings state) {
+        this.version = state.getVersion();
         this.author = state.getAuthor();
     }
+    
 }

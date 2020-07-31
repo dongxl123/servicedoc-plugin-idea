@@ -83,6 +83,9 @@ public class ServiceDocGenerateDialog extends DialogWrapper {
         if (StringUtils.isNotBlank(authorTextField.getText())) {
             settings.setAuthor(authorTextField.getText());
         }
+        if (StringUtils.isNotBlank(versionTextField.getText())) {
+            settings.setVersion(versionTextField.getText());
+        }
     }
 
     private void generateComment() {

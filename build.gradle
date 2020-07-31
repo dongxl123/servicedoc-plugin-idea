@@ -10,7 +10,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 intellij {
     plugins 'java'
-    version 'IC-2019.2'
+    version 'IC-2020.1.3'
     //   version 'IC-2016.2.5'
     //version 'IC-2018.2.1'
     pluginName 'serviceDoc'
@@ -22,7 +22,7 @@ tasks.withType(JavaCompile) {
 }
 
 group 'com.suiyiwen.plugin.idea'
-version '2.2'
+version '2.3'
 
 repositories {
     mavenLocal()
@@ -38,7 +38,5 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.45'
     compileOnly 'org.projectlombok:lombok:1.16.18'
     testCompile 'junit:junit:4.12'
-    compile 'org.apache.commons:commons-lang3:3.7'
-    compile 'commons-collections:commons-collections:3.2.2'
     compile 'com.github.jsonzou:jmockdata:3.1.0'
 }

@@ -20,6 +20,11 @@ ServiceDoc
 Default **Option + Ctrl + Shift + o**(Mac), **Alt + Ctrl + Shift + o** (win)
 
 ## Version Info
+v2.3
+>
+* Resolve conflict: timeout
+* new features: persistent version
+
 v2.2
 > 
 * add pluginIcon.svg

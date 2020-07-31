@@ -13,6 +13,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <h2>v2.3</h2>
+    <ul>
+      <li>Resolve conflict: timeout</li>
+      <li>new features: persistent version</li>
+    </ul>
     <h2>v2.2</h2>
     <ul>
       <li>add pluginIcon.svg</li>
@@ -69,18 +74,9 @@
     -->
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.suiyiwen.plugin.idea.servicedoc.component.ServiceDocSettings"/>
+        <applicationService serviceInterface="com.suiyiwen.plugin.idea.servicedoc.component.operation.JavaDocWriter"
+                            serviceImplementation="com.suiyiwen.plugin.idea.servicedoc.component.operation.impl.JavaDocWriterImpl"/>
     </extensions>
-
-    <application-components>
-        <component>
-            <interface-class>com.suiyiwen.plugin.idea.servicedoc.component.operation.JavaDocWriter</interface-class>
-            <implementation-class>com.suiyiwen.plugin.idea.servicedoc.component.operation.impl.JavaDocWriterImpl
-            </implementation-class>
-        </component>
-    </application-components>
-
-    <project-components>
-    </project-components>
 
     <actions>
         <action id="serviceDocPlugin.action.generate" text="serviceDoc"
